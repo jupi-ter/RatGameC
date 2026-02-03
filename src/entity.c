@@ -35,17 +35,11 @@ void entity_manager_update(EntityArray* arr) {
         }
 
         //removal
-        if (entity->remove == true) {
-            entity_manager_remove(arr, i);
+        if (entity->remove) {
+            REMOVE_AT_SWAPBACK(arr, i);
             i--;
         }
     }
-}
-
-void entity_manager_remove(EntityArray* arr, int index) {
-    if (index >= arr->count || index < 0) return;
-    arr->count--;
-    arr->data[index] = arr->data[arr->count];
 }
 
 void entity_manager_draw(EntityArray* arr) {
@@ -69,8 +63,8 @@ void player_update(Entity* e) {
     e->x += moveHor * e->speed;
     e->y += moveVer * e->speed;
 
-    Clamp(e->x, 0, SCREEN_WIDTH - e->size);
-    Clamp(e->y, 0, SCREEN_HEIGHT - e->size);
+    CLAMP(e->x, 0, SCREEN_WIDTH - e->size);
+    CLAMP(e->y, 0, SCREEN_HEIGHT - e->size);
 
     // animation
     e->frame_counter += e->image_speed;

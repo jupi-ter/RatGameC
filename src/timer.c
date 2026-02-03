@@ -1,5 +1,6 @@
 #include "timer.h"
 #include <stdlib.h>
+#include "utils.h"
 
 TimerArray timer_manager_create(int capacity) {
     TimerArray arr = {0};
@@ -25,14 +26,8 @@ void timer_manager_update(TimerArray* arr) {
 
         if (timer->counter >= timer->frame_target) {
             timer->callback(timer->context);
-            timer_manager_remove(arr, i);
+            REMOVE_AT_SWAPBACK(arr, i);
             i--;
         }
     }
-}
-
-void timer_manager_remove(TimerArray* arr, int index) {
-    if (index >= arr->count || index < 0) return;
-    arr->count--;
-    arr->data[index] = arr->data[arr->count];
 }

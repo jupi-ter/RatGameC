@@ -38,6 +38,8 @@ int main(void)
         EndDrawing();
     }
 
+    FREE_ARRAY(&entity_array);
+
     CloseWindow();
     return 0;
 }
