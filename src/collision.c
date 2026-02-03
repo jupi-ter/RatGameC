@@ -57,8 +57,8 @@ void collision_manager_update(CollisionArray *cArr, EntityArray *eArr) {
                         Entity* e1 = &eArr->data[c1->owner_id];
                         Entity* e2 = &eArr->data[c2->owner_id];
 
-                        e1->callback(e1->context);
-                        e2->callback(e2->context);
+                        e1->on_collision(e1, e2);
+                        e2->on_collision(e2, e1);
                     }
                 }
             }

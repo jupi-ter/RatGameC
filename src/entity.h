@@ -9,9 +9,6 @@ typedef enum {
     ENTITY_TYPE_PLAYER,
 } EntityType;
 
-//todo check this thing
-typedef void (*CallbackWithContext)(void* context);
-
 typedef struct Entity {
     uint32_t id;
     int x;
@@ -26,8 +23,7 @@ typedef struct Entity {
     int image_index;
     float frame_counter;
     float image_speed;
-    CallbackWithContext callback;
-    void* context;
+    void (*on_collision)(struct Entity* self, struct Entity* other);
 } Entity;
 
 typedef struct EntityArray {
