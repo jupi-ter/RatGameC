@@ -15,7 +15,7 @@ EntityArray entity_manager_create(int capacity) {
 void entity_manager_add(EntityArray* arr, Entity entity) {
     if (arr->count + 1 > arr->capacity) {
         arr->capacity *= 2;
-        arr->data = realloc(arr, sizeof(Entity) * arr->capacity);
+        arr->data = realloc(arr->data, sizeof(Entity) * arr->capacity);
     }
 
     arr->data[arr->count++] = entity;

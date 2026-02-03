@@ -11,7 +11,6 @@ typedef enum CollisionShape {
 
 typedef struct Collision {
     CollisionShape shape;
-    //should these be floats?
     float radius;
     int width;
     int height;
@@ -21,7 +20,7 @@ typedef struct Collision {
     //for centering/origin
     int x_offset;
     int y_offset;
-    Entity* owner;
+    int owner_id;
     bool remove;
 } Collision;
 
@@ -33,7 +32,7 @@ typedef struct CollisionArray {
 
 CollisionArray collision_manager_create(int capacity);
 void collision_manager_add(CollisionArray *arr, Collision collision);
-void collision_manager_update(CollisionArray *arr);
+void collision_manager_update(CollisionArray *cArr, EntityArray *eArr);
 void collision_manager_draw(CollisionArray *arr);
 
 #endif

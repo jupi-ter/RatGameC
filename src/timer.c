@@ -13,7 +13,7 @@ TimerArray timer_manager_create(int capacity) {
 void timer_manager_add(TimerArray* arr, Timer timer) {
     if (arr->count + 1 > arr->capacity) {
         arr->capacity *= 2;
-        arr->data = realloc(arr, sizeof(Timer) * arr->capacity);
+        arr->data = realloc(arr->data, sizeof(Timer) * arr->capacity);
     }
 
     arr->data[arr->count++] = timer;

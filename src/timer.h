@@ -2,6 +2,7 @@
 #define TIMER_H
 
 #include <stdbool.h>
+#include "utils.h"
 
 typedef void (*CallbackWithContext)(void* context);
 
