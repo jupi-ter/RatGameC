@@ -9,6 +9,7 @@ static const struct {
     [SPRITE_PLAYER_IDLE] = {"guy_idle", 5},
     [SPRITE_PLAYER_WALK] = {"guy_walk", 5},
     [SPRITE_PLAYER_JUMP] = {"guy_jump", 3},
+    [SPRITE_WALL] = {"wall", 1},
 };
 
 static Sprite sprites[SPRITE_COUNT];

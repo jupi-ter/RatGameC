@@ -1,6 +1,7 @@
 #ifndef ENTITY_H
 #define ENTITY_H
 
+#include "vector2.h"
 #include <stdint.h>
 #include <stdbool.h>
 

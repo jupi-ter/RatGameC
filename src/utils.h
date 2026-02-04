@@ -2,10 +2,18 @@
 #define UTILS_H
 
 #include <stdlib.h>
+
 #define SCREEN_WIDTH 512
 #define SCREEN_HEIGHT 512
+#define GAME_WIDTH 128
+#define GAME_HEIGHT 128
+
+//square
+#define TILE_SIZE 8
 
 #define CLAMP(value, min, max) { if (value < min) value = min; if (value > max) value = max; }
+
+#define MIN(val1, val2) (val1 < val2) ? val1 : val2
 
 #define GET_RANDOM_INT(min, max) ((rand() % (max - min + 1)) + min)
 
