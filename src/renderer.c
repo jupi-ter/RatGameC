@@ -1,4 +1,5 @@
 #include "renderer.h"
+#include "utils.h"
 
 void begin_render(RenderTexture2D renderTarget) {
     BeginTextureMode(renderTarget);
