@@ -1,9 +1,7 @@
 #include <raylib.h>
-#include <stdint.h>
-#include <math.h>
-#include <stdio.h>
 #include "utils.h"
 #include "entity.h"
+#include "sprite.h"
 
 int main(void)
 {
@@ -39,7 +37,7 @@ int main(void)
     }
 
     FREE_ARRAY(&entity_array);
-
+    sprite_manager_unload_all();
     CloseWindow();
     return 0;
 }

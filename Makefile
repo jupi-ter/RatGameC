@@ -1,19 +1,32 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -std=c99 -O2
 INCLUDES = -I/usr/local/include
-LIBS = -L/usr/local/lib -lraylib -lm -lpthread -ldl -lrt -lX11
+
+# Platform detection
+ifeq ($(OS),Windows_NT)
+    LIBS = -L/usr/local/lib -lraylib -lopengl32 -lgdi32 -lwinmm
+    RM = rmdir /s /q
+    MKDIR = if not exist $(BUILD_DIR) mkdir $(BUILD_DIR)
+    TARGET_EXT = .exe
+    RUN_CMD = $(TARGET)
+else
+    LIBS = -L/usr/local/lib -lraylib -lm -lpthread -ldl -lrt -lX11
+    RM = rm -rf
+    MKDIR = mkdir -p $(BUILD_DIR)
+    TARGET_EXT =
+    RUN_CMD = ./$(TARGET)
+endif
 
 SRC_DIR = src
 BUILD_DIR = build
-TARGET = $(BUILD_DIR)/game
-
+TARGET = $(BUILD_DIR)/game$(TARGET_EXT)
 SRCS = $(wildcard $(SRC_DIR)/*.c)
 OBJS = $(SRCS:$(SRC_DIR)/%.c=$(BUILD_DIR)/%.o)
 
 all: $(BUILD_DIR) $(TARGET)
 
 $(BUILD_DIR):
-	mkdir -p $(BUILD_DIR)
+	$(MKDIR)
 
 $(TARGET): $(OBJS)
 	$(CC) $(OBJS) -o $(TARGET) $(LIBS)
@@ -22,9 +35,9 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 clean:
-	rm -rf $(BUILD_DIR)
+	$(RM) $(BUILD_DIR)
 
 run: $(TARGET)
-	./$(TARGET)
+	$(RUN_CMD)
 
 .PHONY: all clean run

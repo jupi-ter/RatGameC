@@ -3,7 +3,6 @@
 
 #include <stdint.h>
 #include <stdbool.h>
-#include "sprite.h"
 
 typedef enum {
     ENTITY_TYPE_PLAYER,
@@ -19,11 +18,11 @@ typedef struct Entity {
     int speed;
     EntityType type;
     bool remove;
-    SpriteID current_sprite_id;
+    int current_sprite_id;
     int image_index;
     float frame_counter;
     float image_speed;
-    void (*on_collision)(struct Entity* self, struct Entity* other);
+    //void (*on_collision)(struct Entity* self, struct Entity* other);
 } Entity;
 
 typedef struct EntityArray {
