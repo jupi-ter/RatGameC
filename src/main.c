@@ -63,7 +63,7 @@ int main(void)
 
     while (!WindowShouldClose())
     {   
-        entity_manager_update(&entity_arr);
+        entity_manager_update(&entity_arr, &tile_arr);
         check_collisions(&rect_arr, &circle_arr, handle_collisions);
 
         BeginDrawing();

@@ -5,6 +5,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include "collision.h"
+#include "tile.h"
 
 typedef enum {
     ENTITY_TYPE_PLAYER,
@@ -39,7 +40,7 @@ typedef struct EntityArray {
 
 EntityArray entity_manager_create(int capacity);
 void entity_manager_add(EntityArray* arr, Entity entity, RectangleArray *rect_arr, CircleArray *circ_arr);
-void entity_manager_update(EntityArray* arr);
+void entity_manager_update(EntityArray* arr, TileArray *tile_arr);
 void entity_manager_draw(EntityArray* arr);
 
 #endif

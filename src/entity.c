@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include "sprite.h"
 #include "utils.h"
+#include "player.h"
 
 EntityArray entity_manager_create(int capacity) {
     EntityArray arr = {0};
@@ -28,30 +29,7 @@ void entity_manager_add(EntityArray* arr, Entity entity, RectangleArray *rect_ar
     arr->data[arr->count++] = entity;
 }
 
-void player_update(Entity* e) {
-    int moveHor = IsKeyDown(KEY_RIGHT) - IsKeyDown(KEY_LEFT);
-    int moveVer = IsKeyDown(KEY_DOWN) - IsKeyDown(KEY_UP);
-
-    e->x += moveHor * e->speed;
-    e->y += moveVer * e->speed;
-
-    CLAMP(e->x, 0, SCREEN_WIDTH - e->size);
-    CLAMP(e->y, 0, SCREEN_HEIGHT - e->size);
-
-    // animation
-    e->frame_counter += e->image_speed;
-
-    if (e->frame_counter >= 1.0f) {
-        e->frame_counter -= 1.0f;
-        e->image_index++;
-        Sprite currentSprite = sprite_manager_get_sprite(e->current_sprite_id);
-        if (e->image_index >= currentSprite.total_frames) {
-            e->image_index = 0;
-        }
-    }
-}
-
-void entity_manager_update(EntityArray* arr) {
+void entity_manager_update(EntityArray* arr, TileArray *tile_arr) {
     for (int i = 0; i < arr->count; i++) {
         Entity* entity = &arr->data[i];
         //run update

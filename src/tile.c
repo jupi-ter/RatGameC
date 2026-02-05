@@ -33,7 +33,7 @@ void tile_array_add(TileArray *arr, int sprite_id, int x, int y) {
     arr->data[arr->count++] = tile;
 }
 
-bool check_collision(TileArray *arr, Rectangle test_bbox) {
+bool check_tile_collision(TileArray *arr, Rectangle test_bbox) {
     for (int i = 0; i < arr->count; i++) {
         Tile tile = arr->data[i];
         if (CheckCollisionRecs(test_bbox, tile.bounds)) {
