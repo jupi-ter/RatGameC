@@ -2,3 +2,4 @@
 -IC:/raylib/w64devkit/x86_64-w64-mingw32/include
 -Isrc
 -std=c99
+-pedantic-errors

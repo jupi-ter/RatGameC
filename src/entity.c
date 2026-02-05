@@ -13,10 +13,16 @@ EntityArray entity_manager_create(int capacity) {
     return arr;
 }
 
-void entity_manager_add(EntityArray* arr, Entity entity) {
+void entity_manager_add(EntityArray* arr, Entity entity, RectangleArray *rect_arr, CircleArray *circ_arr) {
     if (arr->count + 1 > arr->capacity) {
         arr->capacity *= 2;
         arr->data = realloc(arr->data, sizeof(Entity) * arr->capacity);
+    }
+
+    if (entity.collision_shape == COLLISION_RECT) {
+        rect_array_add(rect_arr, entity.collision.rect_collision);
+    } else if (entity.collision_shape == COLLISION_CIRC) {
+        circ_array_add(circ_arr, entity.collision.circle_collision);
     }
 
     arr->data[arr->count++] = entity;

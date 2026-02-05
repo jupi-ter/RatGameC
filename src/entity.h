@@ -4,6 +4,7 @@
 #include "vector2.h"
 #include <stdint.h>
 #include <stdbool.h>
+#include "collision.h"
 
 typedef enum {
     ENTITY_TYPE_PLAYER,
@@ -23,7 +24,11 @@ typedef struct Entity {
     int image_index;
     float frame_counter;
     float image_speed;
-    //void (*on_collision)(struct Entity* self, struct Entity* other);
+    CollisionShape collision_shape;
+    union collision {
+        RectWrapper rect_collision;
+        Circle circle_collision;
+    } collision;
 } Entity;
 
 typedef struct EntityArray {
@@ -33,7 +38,7 @@ typedef struct EntityArray {
 } EntityArray;
 
 EntityArray entity_manager_create(int capacity);
-void entity_manager_add(EntityArray* arr, Entity entity);
+void entity_manager_add(EntityArray* arr, Entity entity, RectangleArray *rect_arr, CircleArray *circ_arr);
 void entity_manager_update(EntityArray* arr);
 void entity_manager_draw(EntityArray* arr);
 

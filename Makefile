@@ -1,6 +1,13 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -std=c99 -O2
+CFLAGS = -Wall -Wextra -pedantic-errors -std=c99 -O2
 INCLUDES = -I/usr/local/include
+
+# Uncomment to enable profiling
+# PROFILE = 1
+
+ifdef PROFILE
+    CFLAGS += -g -fno-omit-frame-pointer
+endif
 
 # Platform detection
 ifeq ($(OS),Windows_NT)
@@ -20,6 +27,7 @@ endif
 SRC_DIR = src
 BUILD_DIR = build
 TARGET = $(BUILD_DIR)/game$(TARGET_EXT)
+
 SRCS = $(wildcard $(SRC_DIR)/*.c)
 OBJS = $(SRCS:$(SRC_DIR)/%.c=$(BUILD_DIR)/%.o)
 
@@ -40,4 +48,9 @@ clean:
 run: $(TARGET)
 	$(RUN_CMD)
 
-.PHONY: all clean run
+profile: clean all
+	perf record -g $(RUN_CMD)
+	perf report
+	@echo "Profile data saved to perf.data"
+
+.PHONY: all clean run profile
