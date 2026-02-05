@@ -21,6 +21,6 @@ typedef struct Sprite {
 } Sprite;
 
 Sprite sprite_manager_get_sprite(SpriteID id);
-void sprite_manager_unload_all();
+void sprite_manager_unload_all(void);
 
 #endif

@@ -2,8 +2,6 @@
 #include "entity.h"
 #include <stdlib.h>
 #include "sprite.h"
-#include "utils.h"
-#include "player.h"
 
 EntityArray entity_manager_create(int capacity) {
     EntityArray arr = {0};
@@ -14,41 +12,39 @@ EntityArray entity_manager_create(int capacity) {
     return arr;
 }
 
-void entity_manager_add(EntityArray* arr, Entity entity, RectangleArray *rect_arr, CircleArray *circ_arr) {
-    if (arr->count + 1 > arr->capacity) {
-        arr->capacity *= 2;
-        arr->data = realloc(arr->data, sizeof(Entity) * arr->capacity);
+void entity_manager_add(EntityArray* entities, Entity entity, RectangleArray *rectangles, CircleArray *circles) {
+    if (entities->count + 1 > entities->capacity) {
+        entities->capacity *= 2;
+        entities->data = realloc(entities->data, sizeof(Entity) * entities->capacity);
     }
 
     if (entity.collision_shape == COLLISION_RECT) {
-        rect_array_add(rect_arr, entity.collision.rect_collision);
+        rect_array_add(rectangles, entity.collision.rect_collision);
     } else if (entity.collision_shape == COLLISION_CIRC) {
-        circ_array_add(circ_arr, entity.collision.circle_collision);
+        circ_array_add(circles, entity.collision.circle_collision);
     }
 
-    arr->data[arr->count++] = entity;
+    entities->data[entities->count++] = entity;
 }
 
-void entity_manager_update(EntityArray* arr, TileArray *tile_arr) {
-    for (int i = 0; i < arr->count; i++) {
-        Entity* entity = &arr->data[i];
-        //run update
+// deprecated, entity is simply a component now.
+// removal still has to be done though, with moving dead entities to another array to be cleared.
+/*
+void entity_manager_update(EntityArray* entities, TileArray *tiles) {
+    for (int i = 0; i < entities->count; i++) {
+        Entity* entity = &entities->data[i];
+        
+        // run updates
         switch (entity->type)
         {
             case ENTITY_TYPE_PLAYER:
-                player_update(entity);
+                //player_update(entity, tiles);
             break;
 
             default: break;
-        }
-
-        //removal
-        if (entity->remove) {
-            REMOVE_AT_SWAPBACK(arr, i);
-            i--;
-        }
+        }   
     }
-}
+}*/
 
 void entity_manager_draw(EntityArray* arr) {
     /*for (int i = 0; i < arr->count; i++) {

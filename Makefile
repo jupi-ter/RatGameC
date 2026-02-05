@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -pedantic-errors -std=c99 -O2
+CFLAGS = -Wall -Wextra -std=c99 -O2
 INCLUDES = -I/usr/local/include
 
 # Uncomment to enable profiling

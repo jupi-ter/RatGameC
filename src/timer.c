@@ -10,23 +10,23 @@ TimerArray timer_manager_create(int capacity) {
     return arr;
 }
 
-void timer_manager_add(TimerArray* arr, Timer timer) {
-    if (arr->count + 1 > arr->capacity) {
-        arr->capacity *= 2;
-        arr->data = realloc(arr->data, sizeof(Timer) * arr->capacity);
+void timer_manager_add(TimerArray* timers, Timer timer) {
+    if (timers->count + 1 > timers->capacity) {
+        timers->capacity *= 2;
+        timers->data = realloc(timers->data, sizeof(Timer) * timers->capacity);
     }
 
-    arr->data[arr->count++] = timer;
+    timers->data[timers->count++] = timer;
 }
 
-void timer_manager_update(TimerArray* arr) {
-    for (int i = 0; i < arr->count; i++) {
-        Timer* timer = &arr->data[i];
+void timer_manager_update(TimerArray* timers) {
+    for (int i = 0; i < timers->count; i++) {
+        Timer* timer = &timers->data[i];
         timer->counter++;
 
         if (timer->counter >= timer->frame_target) {
             timer->callback(timer->context);
-            REMOVE_AT_SWAPBACK(arr, i);
+            REMOVE_AT_SWAPBACK(timers, i);
             i--;
         }
     }

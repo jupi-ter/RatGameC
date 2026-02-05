@@ -2,7 +2,6 @@
 #define TIMER_H
 
 #include <stdbool.h>
-#include "utils.h"
 
 typedef void (*CallbackWithContext)(void* context);
 
@@ -21,7 +20,7 @@ typedef struct TimerArray {
 } TimerArray;
 
 TimerArray timer_manager_create(int capacity);
-void timer_manager_add(TimerArray *arr, Timer timer);
-void timer_manager_update(TimerArray *arr);
+void timer_manager_add(TimerArray *timers, Timer timer);
+void timer_manager_update(TimerArray *timers);
 
 #endif

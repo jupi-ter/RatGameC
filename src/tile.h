@@ -16,8 +16,8 @@ typedef struct TileArray {
 } TileArray;
 
 TileArray tile_array_create(int capacity);
-void tile_array_add(TileArray *arr, int sprite_id, int x, int y);
-bool check_tile_collision(TileArray *arr, Rectangle test_bbox);
-void tile_array_draw(TileArray *arr);
+void tile_array_add(TileArray *tiles, int sprite_id, int x, int y);
+bool check_tile_collision(TileArray *tiles, Rectangle test_bbox);
+void tile_array_draw(TileArray *tiles);
 
 #endif 

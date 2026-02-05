@@ -19,7 +19,6 @@ typedef struct RectWrapper {
 // why doesn't raylib have a Circle struct
 typedef struct Circle {
     int owner_id;
-    // change this to vector2
     Vector2 position;
     float radius;
 } Circle;
@@ -40,6 +39,6 @@ CircleArray circ_array_create(int capacity);
 RectangleArray rect_array_create(int capacity);
 void circ_array_add(CircleArray* arr, Circle circ);
 void rect_array_add(RectangleArray* arr, RectWrapper rect);
-void check_collisions(RectangleArray* rect_arr, CircleArray* circ_arr, CollisionCallback on_collision);
+void check_collisions(RectangleArray* rectangles, CircleArray* circles, CollisionCallback on_collision);
 
 #endif

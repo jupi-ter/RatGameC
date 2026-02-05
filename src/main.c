@@ -6,6 +6,7 @@
 #include "collision.h"
 #include "renderer.h"
 #include <stdio.h>
+#include "player.h"
 
 void handle_collisions(int id1, int id2) {
     printf("%d %d", id1, id2);
@@ -23,28 +24,34 @@ int main(void)
     int cols = GAME_WIDTH / TILE_SIZE;
     int rows = GAME_HEIGHT / TILE_SIZE;
 
-    TileArray tile_arr = tile_array_create(rows * cols);
-    tile_array_add(&tile_arr, SPRITE_WALL, GAME_WIDTH/2+1, (GAME_HEIGHT/2) + TILE_SIZE+2);
+    TileArray tiles = tile_array_create(rows * cols);
+    tile_array_add(&tiles, SPRITE_WALL, GAME_WIDTH/2+1, (GAME_HEIGHT/2) + TILE_SIZE+2);
 
-    CircleArray circle_arr = circ_array_create(16);
-    RectangleArray rect_arr = rect_array_create(16);
+    CircleArray circles = circ_array_create(16);
+    RectangleArray rectangles = rect_array_create(16);
+    PlayerArray players = player_array_create(4);
+    EntityArray entities = entity_manager_create(16);
 
-    EntityArray entity_arr = entity_manager_create(16);
+    // BEGIN CREATING PLAYER
+
+    // INCREMENT ENTITY COUNT ON EVERY INSTANTIATION
+    // THIS SHOULD BE A UNIQUE NUMBER
+    entity_count+=1;
 
     Rectangle player_rect = {
-        .x = GAME_WIDTH/2,
-        .y = GAME_HEIGHT/2,
+        .x = (int)(GAME_WIDTH/2),
+        .y = (int)(GAME_HEIGHT/2),
         .width = 10,
         .height = 10
     };
 
     RectWrapper player_collision = {
-        .owner_id = entity_count,
+        .owner_id = entity_count, //USE ENTITY COUNT ON EVERY CONNECTED 
         .rect = player_rect
     };
 
-    Entity player = {
-        .id = 1,
+    Entity player_entity = {
+        .id = entity_count,
         .x = GAME_WIDTH / 2,
         .y = GAME_HEIGHT / 2,
         .size = 10,
@@ -58,13 +65,24 @@ int main(void)
             .rect_collision = player_collision
         }
     };
+    
+    Player player = {
+        .entity_id = entity_count,
+        .bufferCounter = 0,
+        .coyoteCounter = 0,
+        .hsp = 0,
+        .vsp = 0
+    };
 
-    entity_manager_add(&entity_arr, player, &rect_arr, &circle_arr);
+    entity_manager_add(&entities, player_entity, &rectangles, &circles);
+    player_array_add(&players, player);
+
+    // END CREATING PLAYER
 
     while (!WindowShouldClose())
-    {   
-        entity_manager_update(&entity_arr, &tile_arr);
-        check_collisions(&rect_arr, &circle_arr, handle_collisions);
+    {
+        update_players(&players, &entities, &tiles);
+        check_collisions(&rectangles, &circles, handle_collisions);
 
         BeginDrawing();
         ClearBackground(BLACK);
@@ -72,8 +90,13 @@ int main(void)
         //BEGIN RENDERING
         begin_render(renderTarget);
         
-        tile_array_draw(&tile_arr);
-        entity_manager_draw(&entity_arr);
+        tile_array_draw(&tiles);
+        // will be replaced by renderables
+        entity_manager_draw(&entities);
+
+        char buffer[16];
+        sprintf(buffer,"%d", GetFPS());
+        DrawText(buffer, 8, 8, 8, BLACK);
 
         //END RENDERING
         end_render(renderTarget);
@@ -81,10 +104,11 @@ int main(void)
         EndDrawing();
     }
 
-    FREE_ARRAY(&rect_arr);
-    FREE_ARRAY(&circle_arr);
-    FREE_ARRAY(&tile_arr);
-    FREE_ARRAY(&entity_arr);
+    FREE_ARRAY(&rectangles);
+    FREE_ARRAY(&circles);
+    FREE_ARRAY(&tiles);
+    FREE_ARRAY(&entities);
+    FREE_ARRAY(&players);
     sprite_manager_unload_all();
     CloseWindow();
     return 0;

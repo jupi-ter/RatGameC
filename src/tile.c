@@ -12,10 +12,10 @@ TileArray tile_array_create(int capacity) {
     return arr;
 }
 
-void tile_array_add(TileArray *arr, int sprite_id, int x, int y) {
-    if (arr->count + 1 > arr->capacity) {
-        arr->capacity *= 2;
-        arr->data = realloc(arr->data, sizeof(Tile) * arr->capacity);
+void tile_array_add(TileArray *tiles, int sprite_id, int x, int y) {
+    if (tiles->count + 1 > tiles->capacity) {
+        tiles->capacity *= 2;
+        tiles->data = realloc(tiles->data, sizeof(Tile) * tiles->capacity);
     }
 
     Rectangle rect = {
@@ -30,12 +30,12 @@ void tile_array_add(TileArray *arr, int sprite_id, int x, int y) {
         .bounds = rect
     };
 
-    arr->data[arr->count++] = tile;
+    tiles->data[tiles->count++] = tile;
 }
 
-bool check_tile_collision(TileArray *arr, Rectangle test_bbox) {
-    for (int i = 0; i < arr->count; i++) {
-        Tile tile = arr->data[i];
+bool check_tile_collision(TileArray *tiles, Rectangle test_bbox) {
+    for (int i = 0; i < tiles->count; i++) {
+        Tile tile = tiles->data[i];
         if (CheckCollisionRecs(test_bbox, tile.bounds)) {
             return true;
         }
@@ -43,11 +43,11 @@ bool check_tile_collision(TileArray *arr, Rectangle test_bbox) {
     return false;
 }
 
-void tile_array_draw(TileArray *arr) {
-    for (int i = 0; i < arr->count; i++) {
-        Tile tile = arr->data[i];
+void tile_array_draw(TileArray *tiles) {
+    for (int i = 0; i < tiles->count; i++) {
+        Tile tile = tiles->data[i];
         Rectangle rect = tile.bounds;
-        Sprite sprite = sprite_manager_get_sprite(arr->data[i].sprite_id);
+        Sprite sprite = sprite_manager_get_sprite(tiles->data[i].sprite_id);
         DrawTexture(sprite.frames[0], rect.x, rect.y, WHITE);
     }
 }

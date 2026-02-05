@@ -35,7 +35,7 @@ Sprite sprite_manager_get_sprite(SpriteID id) {
     return sprites[id];
 }
 
-void sprite_manager_unload_all() {
+void sprite_manager_unload_all(void) {
     for (int i = 0; i < SPRITE_COUNT; i++) {
         if (is_loaded[i]) {
             Sprite *spr = &sprites[i];
