@@ -2,6 +2,8 @@
 #include "raylib.h"
 #include <stdlib.h>
 
+
+
 CircleArray circ_array_create(int capacity) {
     CircleArray circles = {0};
     circles.count = 0;
@@ -76,5 +78,19 @@ void check_collisions(RectangleArray* rectangles, CircleArray* circles, Collisio
                 return;
             }
         }
+    }
+}
+
+void draw_collisions(RectangleArray* rectangles, CircleArray* circles) {
+    Color fuchsia = {
+        .r = 255,
+        .g = 0,
+        .b = 255,
+        .a = 255
+    };
+
+    for (int i = 0; i < rectangles->count; i++) {
+        RectWrapper c1 = rectangles->data[i];
+        DrawRectangleRec(c1.rect, fuchsia);
     }
 }

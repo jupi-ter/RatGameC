@@ -96,6 +96,7 @@ int main(void)
         tile_array_draw(&tiles);
         // will be replaced by renderables
         entity_manager_draw(&entities);
+        draw_collisions(&rectangles, &circles);
 
         char buffer[16];
         sprintf(buffer,"%d", GetFPS());

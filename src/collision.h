@@ -40,5 +40,6 @@ RectangleArray rect_array_create(int capacity);
 void circ_array_add(CircleArray* arr, Circle circ);
 void rect_array_add(RectangleArray* arr, RectWrapper rect);
 void check_collisions(RectangleArray* rectangles, CircleArray* circles, CollisionCallback on_collision);
+void draw_collisions(RectangleArray* rectangles, CircleArray* circles);
 
 #endif
