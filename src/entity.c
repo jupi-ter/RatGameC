@@ -54,8 +54,39 @@ void entity_manager_draw(EntityArray* arr) {
 
     for (int i = 0; i < arr->count; i++) {
         Entity* e = &arr->data[i];
-        Sprite currentSprite = sprite_manager_get_sprite(e->current_sprite_id);
-    
-        DrawTexture(currentSprite.frames[e->image_index], e->x, e->y, WHITE);    
+        Sprite sprite_array = sprite_manager_get_sprite(e->current_sprite_id);
+        Texture2D current_texture = sprite_array.frames[e->image_index];
+        
+        Vector2 origin = {
+            .x = 0.0f,
+            .y = 0.0f
+        };
+
+        Rectangle source = {
+            .x = 0,
+            .y = 0,
+            .width = current_texture.width,
+            .height = current_texture.height,
+        };
+
+        Rectangle dest = {
+            .x = (int)e->x,
+            .y = (int)e->y,
+            .width = current_texture.width * 1, //xscale
+            .height = current_texture.height * 1, //yscale
+        };
+
+        DrawTexturePro(current_texture, source, dest, origin, 0 , WHITE);
+    }
+}
+
+void entity_change_sprite_data(Entity *entity, int sprite_id, float image_speed) {
+    if (entity->current_sprite_id != sprite_id) {
+        entity->current_sprite_id = sprite_id;
+        entity->image_speed = image_speed;
+
+        //reset
+        entity->frame_counter = 0.0f;
+        entity->image_index = 0;
     }
 }

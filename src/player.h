@@ -3,13 +3,16 @@
 
 #include "entity.h"
 #include "tile.h"
+#include <stdbool.h>
 
 typedef struct Player {
     int entity_id;
-    int coyoteCounter;
-    int bufferCounter;
+    int coyote_counter;
+    int buffer_counter;
     float hsp;
     float vsp;
+    float move_speed;
+    bool is_grounded;
 } Player;
 
 typedef struct PlayerArray {

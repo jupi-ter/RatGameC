@@ -38,9 +38,12 @@ int main(void)
     // THIS SHOULD BE A UNIQUE NUMBER
     entity_count+=1;
 
+    int player_x = GAME_WIDTH / 2;
+    int player_y = GAME_HEIGHT / 2;
+
     Rectangle player_rect = {
-        .x = (int)(GAME_WIDTH/2),
-        .y = (int)(GAME_HEIGHT/2),
+        .x = (float)player_x,
+        .y = (float)player_y,
         .width = 10,
         .height = 10
     };
@@ -52,14 +55,13 @@ int main(void)
 
     Entity player_entity = {
         .id = entity_count,
-        .x = GAME_WIDTH / 2,
-        .y = GAME_HEIGHT / 2,
+        .x = (float)player_x,
+        .y = (float)player_y,
         .size = 10,
-        .speed = 2,
         .type = ENTITY_TYPE_PLAYER,
         .current_sprite_id = SPRITE_PLAYER_IDLE,
         .image_index = 0,
-        .image_speed = 0.1f,
+        .image_speed = 0.3f,
         .frame_counter = 0.0f,
         .collision = {
             .rect_collision = player_collision
@@ -68,10 +70,11 @@ int main(void)
     
     Player player = {
         .entity_id = entity_count,
-        .bufferCounter = 0,
-        .coyoteCounter = 0,
+        .buffer_counter = 0,
+        .coyote_counter = 0,
         .hsp = 0,
-        .vsp = 0
+        .vsp = 0,
+        .move_speed = 0
     };
 
     entity_manager_add(&entities, player_entity, &rectangles, &circles);

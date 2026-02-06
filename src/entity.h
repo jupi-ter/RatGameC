@@ -4,7 +4,6 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include "collision.h"
-#include "tile.h"
 
 typedef enum {
     ENTITY_TYPE_PLAYER,
@@ -12,8 +11,8 @@ typedef enum {
 
 typedef struct Entity {
     uint32_t id;
-    int x;
-    int y;
+    float x;
+    float y;
     int up; //vertical flip
     int right; //horizontal flip
     
@@ -21,9 +20,8 @@ typedef struct Entity {
     EntityType type;
     int size;
 
-    // these need to be removed
+    // rethink removal
     bool remove;
-    int speed;
 
     // these need to go into their own component
     int current_sprite_id;
@@ -49,9 +47,16 @@ typedef struct EntityArray {
 
 EntityArray entity_manager_create(int capacity);
 void entity_manager_add(EntityArray* arr, Entity entity, RectangleArray *rect_arr, CircleArray *circ_arr);
+
 // maybe this could exist in the game loop for the sole purpose of checking deletion.
 // for now, it's deprecated.
 //void entity_manager_update(EntityArray* arr, TileArray *tile_arr);
+
+//renderables...
 void entity_manager_draw(EntityArray* arr);
+
+// im only leaving this here to not lose them
+// these values need to go to another struct
+void entity_change_sprite_data(Entity* entity, int sprite_id, float image_speed);
 
 #endif
