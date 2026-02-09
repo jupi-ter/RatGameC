@@ -64,7 +64,7 @@ static void jump(Player *player, Entity *entity) {
     player->buffer_counter = 0;
 }
 
-static void update_vertical_movement(Player *player, Entity *entity, TileArray *tiles, RectangleArray *rectangles) {
+static void update_vertical_movement(Player *player, Entity *entity, TileGrid *tiles, RectangleArray *rectangles) {
     bool jump_key = IsKeyDown(KEY_UP);
     bool jump_key_released = IsKeyReleased(KEY_UP);
 
@@ -83,7 +83,7 @@ static void update_vertical_movement(Player *player, Entity *entity, TileArray *
     RectWrapper *ptr_rect = &rectangles->data[entity->id];
     RectWrapper copy_rectwrapper = *ptr_rect;
     copy_rectwrapper.rect.y -= jump_height;
-    if (jump_key && !check_tile_collision(tiles, copy_rectwrapper.rect)) {
+    if (jump_key && !tile_grid_check_collision(tiles, copy_rectwrapper.rect)) {
         player->buffer_counter = max_jump_buffer;
     }
 
@@ -98,16 +98,16 @@ static void update_vertical_movement(Player *player, Entity *entity, TileArray *
     }
 }
 
-static void check_collisions_and_move(Player *player, Entity *entity, TileArray* tiles, RectangleArray *rectangles) {
+static void check_collisions_and_move(Player *player, Entity *entity, TileGrid* tiles, RectangleArray *rectangles) {
     RectWrapper *rect = &rectangles->data[entity->id];
     
     entity->x += player->hsp;
     rect->rect.x = (int)entity->x;
     
-    if (check_tile_collision(tiles, rect->rect)) {
+    if (tile_grid_check_collision(tiles, rect->rect)) {
         float push_dir = (player->hsp > 0) ? -1.0f : 1.0f;
         
-        while (check_tile_collision(tiles, rect->rect)) {
+        while (tile_grid_check_collision(tiles, rect->rect)) {
             entity->x += push_dir;
             rect->rect.x = (int)entity->x;
         }
@@ -118,10 +118,10 @@ static void check_collisions_and_move(Player *player, Entity *entity, TileArray*
     entity->y += player->vsp;
     rect->rect.y = (int)entity->y;
     
-    if (check_tile_collision(tiles, rect->rect)) {
+    if (tile_grid_check_collision(tiles, rect->rect)) {
         float push_dir = (player->vsp > 0) ? -1.0f : 1.0f;
         
-        while (check_tile_collision(tiles, rect->rect)) {
+        while (tile_grid_check_collision(tiles, rect->rect)) {
             entity->y += push_dir;
             rect->rect.y = (int)entity->y;
         }
@@ -136,7 +136,7 @@ static void check_collisions_and_move(Player *player, Entity *entity, TileArray*
         .height = rect->rect.height
     };
     
-    if (check_tile_collision(tiles, ground_check)) {
+    if (tile_grid_check_collision(tiles, ground_check)) {
         player->is_grounded = true;
         player->move_speed = ground_speed;
     } else {
@@ -145,7 +145,7 @@ static void check_collisions_and_move(Player *player, Entity *entity, TileArray*
     }
 }
 
-static void player_update(Player* player, Entity *entity, TileArray *tiles, RectangleArray *rectangles) {
+static void player_update(Player* player, Entity *entity, TileGrid *tiles, RectangleArray *rectangles) {
     int move_hor = IsKeyDown(KEY_RIGHT) - IsKeyDown(KEY_LEFT);
     animation(entity);
     update_horizontal_movement(player, entity, move_hor);
@@ -154,7 +154,7 @@ static void player_update(Player* player, Entity *entity, TileArray *tiles, Rect
     check_collisions_and_move(player, entity, tiles, rectangles);
 }
 
-void update_players(PlayerArray* players, EntityArray *entities, TileArray *tiles, RectangleArray *rectangles) {
+void update_players(PlayerArray* players, EntityArray *entities, TileGrid *tiles, RectangleArray *rectangles) {
     for (int i = 0; i < players->count; i++) {
         Player *player = &players->data[i];
         Entity *entity = &entities->data[i];

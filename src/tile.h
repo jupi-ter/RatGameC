@@ -3,21 +3,20 @@
 
 #include <stdbool.h>
 #include <raylib.h>
+#include "sprite.h"
 
-typedef struct Tile {
-    int sprite_id;
-    Rectangle bounds;
-} Tile;
+typedef struct TileGrid {
+    unsigned char* data;
+    int width;
+    int height;
+} TileGrid;
 
-typedef struct TileArray {
-    Tile* data;
-    int count;
-    int capacity;
-} TileArray;
-
-TileArray tile_array_create(int capacity);
-void tile_array_add(TileArray *tiles, int sprite_id, int x, int y);
-bool check_tile_collision(TileArray *tiles, Rectangle test_bbox);
-void tile_array_draw(TileArray *tiles);
+TileGrid tile_grid_create(int width, int height);
+void tile_grid_free(TileGrid* grid);
+void tile_grid_set(TileGrid *grid, int x, int y, SpriteID type);
+SpriteID tile_grid_get(TileGrid *grid, int x, int y);
+bool tile_grid_check_collision(TileGrid *grid, Rectangle bbox);
+void tile_grid_draw(TileGrid *grid);
+void tile_grid_draw_debug(TileGrid *grid);
 
 #endif 

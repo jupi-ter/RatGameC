@@ -24,6 +24,6 @@ typedef struct PlayerArray {
 
 PlayerArray player_array_create(int capacity);
 void player_array_add(PlayerArray *players, Player player);
-void update_players(PlayerArray* players, EntityArray *entities, TileArray *tiles, RectangleArray* rectangles);
+void update_players(PlayerArray* players, EntityArray *entities, TileGrid *tiles, RectangleArray* rectangles);
 
 #endif

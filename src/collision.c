@@ -86,7 +86,7 @@ void draw_collisions(RectangleArray* rectangles, CircleArray* circles) {
         .r = 255,
         .g = 0,
         .b = 255,
-        .a = 255
+        .a = 120
     };
 
     for (int i = 0; i < rectangles->count; i++) {

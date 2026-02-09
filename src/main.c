@@ -34,9 +34,11 @@ int main(void)
     int cols = GAME_WIDTH / TILE_SIZE;
     int rows = GAME_HEIGHT / TILE_SIZE;
 
-    TileArray tiles = tile_array_create(rows * cols);
-    tile_array_add(&tiles, SPRITE_WALL, GAME_WIDTH/2+1, (GAME_HEIGHT/2) + TILE_SIZE+2);
-
+    TileGrid tiles = tile_grid_create(cols, rows);
+    //GAME_WIDTH/2
+    //GAME_HEIGHT/2
+    tile_grid_set(&tiles, 8, 8, SPRITE_WALL);
+    
     CircleArray circles = circ_array_create(16);
     RectangleArray rectangles = rect_array_create(16);
     PlayerArray players = player_array_create(4);
@@ -49,7 +51,7 @@ int main(void)
     //entity_count+=1; //commented for now because of segfault. to fix this we need add_at functions.
 
     int player_x = GAME_WIDTH / 2;
-    int player_y = GAME_HEIGHT / 2;
+    int player_y = (GAME_HEIGHT / 2) - 10;
 
     Rectangle player_rect = {
         .x = (float)player_x,
@@ -102,14 +104,15 @@ int main(void)
         //BEGIN RENDERING
         begin_render(renderTarget);
         
-        tile_array_draw(&tiles);
+        tile_grid_draw(&tiles);
+        //tile_grid_draw_debug(&tiles);
         // will be replaced by renderables
         entity_manager_draw(&entities);
         //draw_collisions(&rectangles, &circles);
 
-        char buffer[16];
-        sprintf(buffer,"%d", GetFPS());
-        DrawText(buffer, 8, 8, 8, BLACK);
+        //char buffer[16];
+        //sprintf(buffer,"%d", GetFPS());
+        //DrawText(buffer, 8, 8, 8, BLACK);
 
         //END RENDERING
         end_render(renderTarget);
@@ -119,7 +122,7 @@ int main(void)
 
     FREE_ARRAY(&rectangles);
     FREE_ARRAY(&circles);
-    FREE_ARRAY(&tiles);
+    tile_grid_free(&tiles);
     FREE_ARRAY(&entities);
     FREE_ARRAY(&players);
     sprite_manager_unload_all();

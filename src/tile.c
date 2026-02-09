@@ -1,53 +1,78 @@
 #include "tile.h"
 #include "raylib.h"
+#include "sprite.h"
 #include "utils.h"
 #include <stdlib.h>
-#include "sprite.h"
 
-TileArray tile_array_create(int capacity) {
-    TileArray arr = {0};
-    arr.count = 0;
-    arr.capacity = capacity;
-    arr.data = malloc(sizeof(Tile) * capacity);
-    return arr;
+TileGrid tile_grid_create(int width, int height) {
+    TileGrid grid = {0};
+    grid.width = width;
+    grid.height = height;
+    grid.data = calloc(width * height, sizeof(unsigned char));
+    return grid;
 }
 
-void tile_array_add(TileArray *tiles, int sprite_id, int x, int y) {
-    if (tiles->count + 1 > tiles->capacity) {
-        tiles->capacity *= 2;
-        tiles->data = realloc(tiles->data, sizeof(Tile) * tiles->capacity);
-    }
-
-    Rectangle rect = {
-        .x = x,
-        .y = y,
-        .width = TILE_SIZE,
-        .height = TILE_SIZE
-    };
-
-    Tile tile = {
-        .sprite_id = sprite_id,
-        .bounds = rect
-    };
-
-    tiles->data[tiles->count++] = tile;
+void tile_grid_free(TileGrid* grid) {
+    free(grid->data);
+    grid->width = 0;
+    grid->height = 0;
+    grid->data = NULL;
 }
 
-bool check_tile_collision(TileArray *tiles, Rectangle test_bbox) {
-    for (int i = 0; i < tiles->count; i++) {
-        Tile tile = tiles->data[i];
-        if (CheckCollisionRecs(test_bbox, tile.bounds)) {
-            return true;
+void tile_grid_set(TileGrid *grid, int x, int y, SpriteID type) {
+    if (x < 0 || x >= grid->width || y < 0 || y >= grid->height) return;
+    grid->data[y * grid->width + x] = type;
+}
+
+SpriteID tile_grid_get(TileGrid *grid, int x, int y) {
+    if (x < 0 || x >= grid->width || y < 0 || y >= grid->height) return SPRITE_NONE;
+    return grid->data[y * grid->width + x];
+}
+
+bool tile_grid_check_collision(TileGrid *grid, Rectangle bbox) {
+    int start_x = (int)(bbox.x / TILE_SIZE);
+    int start_y = (int)(bbox.y / TILE_SIZE);
+    int end_x = (int)((bbox.x + bbox.width - 1) / TILE_SIZE);
+    int end_y = (int)((bbox.y + bbox.height - 1) / TILE_SIZE);
+    
+    for (int y = start_y; y <= end_y; y++) {
+        for (int x = start_x; x <= end_x; x++) {
+            SpriteID type = tile_grid_get(grid, x, y);
+            if (type != SPRITE_NONE) {  // any non-air tile is solid
+                return true;
+            }
         }
     }
     return false;
 }
 
-void tile_array_draw(TileArray *tiles) {
-    for (int i = 0; i < tiles->count; i++) {
-        Tile tile = tiles->data[i];
-        Rectangle rect = tile.bounds;
-        Sprite sprite = sprite_manager_get_sprite(tiles->data[i].sprite_id);
-        DrawTexture(sprite.frames[0], rect.x, rect.y, WHITE);
+void tile_grid_draw(TileGrid *grid) {
+    for (int y = 0; y < grid->height; y++) {
+        for (int x = 0; x < grid->width; x++) {
+            SpriteID type = grid->data[y * grid->width + x];
+            if (type == SPRITE_NONE) continue;
+            
+            Sprite sprite = sprite_manager_get_sprite(type);
+            DrawTexture(sprite.frames[0], x * TILE_SIZE, y * TILE_SIZE, WHITE);
+        }
+    }
+}
+
+void tile_grid_draw_debug(TileGrid* grid) {
+    Color grid_color = BLACK;
+    for (int y = 0; y <= grid->height; y++) {
+        DrawLine(
+            0, y * TILE_SIZE,
+            grid->width * TILE_SIZE, y * TILE_SIZE,
+            grid_color
+        );
+    }
+    
+    for (int x = 0; x <= grid->width; x++) {
+        DrawLine(
+            x * TILE_SIZE, 0,
+            x * TILE_SIZE, grid->height * TILE_SIZE,
+            grid_color
+        );
     }
 }

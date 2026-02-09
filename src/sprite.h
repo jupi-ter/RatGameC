@@ -8,10 +8,11 @@
 #define MAX_FRAMES 16
 
 typedef enum SpriteID {
+    SPRITE_NONE,
+    SPRITE_WALL,
     SPRITE_PLAYER_IDLE,
     SPRITE_PLAYER_WALK,
     SPRITE_PLAYER_JUMP,
-    SPRITE_WALL,
     SPRITE_COUNT
 } SpriteID;
 
