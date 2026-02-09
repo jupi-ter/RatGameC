@@ -33,10 +33,6 @@ typedef struct Entity {
     // neither should they hold a pointer to them
     // we need to use SoA here, but that requires refactoring the collision management a little.
     CollisionShape collision_shape;
-    union collision {
-        RectWrapper rect_collision;
-        Circle circle_collision;
-    } collision;
 } Entity;
 
 typedef struct EntityArray {
@@ -46,7 +42,7 @@ typedef struct EntityArray {
 } EntityArray;
 
 EntityArray entity_manager_create(int capacity);
-void entity_manager_add(EntityArray* arr, Entity entity, RectangleArray *rect_arr, CircleArray *circ_arr);
+void entity_manager_add(EntityArray* arr, Entity entity);
 
 // maybe this could exist in the game loop for the sole purpose of checking deletion.
 // for now, it's deprecated.

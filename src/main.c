@@ -36,7 +36,7 @@ int main(void)
 
     // INCREMENT ENTITY COUNT ON EVERY INSTANTIATION
     // THIS SHOULD BE A UNIQUE NUMBER
-    entity_count+=1;
+    //entity_count+=1; //commented for now because of segfault. to fix this we need add_at functions.
 
     int player_x = GAME_WIDTH / 2;
     int player_y = GAME_HEIGHT / 2;
@@ -49,7 +49,7 @@ int main(void)
     };
 
     RectWrapper player_collision = {
-        .owner_id = entity_count, //USE ENTITY COUNT ON EVERY CONNECTED 
+        .owner_id = entity_count, //USE ENTITY COUNT ON EVERY CONNECTED COMPONENT
         .rect = player_rect
     };
 
@@ -63,9 +63,7 @@ int main(void)
         .image_index = 0,
         .image_speed = 0.3f,
         .frame_counter = 0.0f,
-        .collision = {
-            .rect_collision = player_collision
-        }
+        .collision_shape = COLLISION_RECT
     };
     
     Player player = {
@@ -77,14 +75,15 @@ int main(void)
         .move_speed = 0
     };
 
-    entity_manager_add(&entities, player_entity, &rectangles, &circles);
+    rect_array_add(&rectangles, player_collision);
+    entity_manager_add(&entities, player_entity);
     player_array_add(&players, player);
 
     // END CREATING PLAYER
 
     while (!WindowShouldClose())
     {
-        update_players(&players, &entities, &tiles);
+        update_players(&players, &entities, &tiles, &rectangles);
         check_collisions(&rectangles, &circles, handle_collisions);
 
         BeginDrawing();
@@ -96,7 +95,7 @@ int main(void)
         tile_array_draw(&tiles);
         // will be replaced by renderables
         entity_manager_draw(&entities);
-        draw_collisions(&rectangles, &circles);
+        //draw_collisions(&rectangles, &circles);
 
         char buffer[16];
         sprintf(buffer,"%d", GetFPS());
