@@ -12,6 +12,16 @@ void handle_collisions(int id1, int id2) {
     printf("%d %d", id1, id2);
 }
 
+/*
+    TODO:
+    * create the renderables struct and refactor.
+    * analyze structure, if favorable: create the transform struct and refactor.
+    * move entity extenders (player, enemy, etc) to separate, cleaner functions that don't take up main space.
+    * move tiles to a grid with a 2d boolean array and make their sprite drawing even simpler
+    * move tile collisions to regular collisions (unsure)
+    * create the level loader. if feeling spicy, create a gui level editor.
+*/
+
 int main(void)
 {
     int entity_count = 0;
