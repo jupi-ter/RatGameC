@@ -6,6 +6,8 @@
 #include "collision.h"
 #include "timer.h"
 #include <stdbool.h>
+#include "transform.h"
+#include "renderable.h"
 
 typedef struct Player {
     int entity_id;
@@ -27,6 +29,6 @@ typedef struct PlayerArray {
 
 PlayerArray player_array_create(int capacity);
 void player_array_add(PlayerArray *players, Player player);
-void update_players(PlayerArray* players, EntityArray *entities, TileGrid *tiles, RectangleArray* rectangles, TimerArray *timers);
+void update_players(PlayerArray* players, EntityArray *entities, TransformArray *transforms, RenderableArray *renderables, TileGrid *tiles, RectangleArray* rectangles, TimerArray *timers);
 
 #endif

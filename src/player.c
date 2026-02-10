@@ -31,37 +31,23 @@ void player_array_add(PlayerArray *players, Player player) {
     players->data[players->count++] = player;
 }
 
-// this needs to be moved onto a renderables parallel array because it's ugly and because of code reusability
-static void animation(Entity *entity) {
-    entity->frame_counter += entity->image_speed;
-
-    if (entity->frame_counter >= 1.0f) {
-        entity->frame_counter -= 1.0f;
-        entity->image_index++;
-        Sprite currentSprite = sprite_manager_get_sprite(entity->current_sprite_id);
-        if (entity->image_index >= currentSprite.total_frames) {
-            entity->image_index = 0;
-        }
-    }
-}
-
-static void change_animations(Player *player, Entity *entity, int move_hor) {
+static void change_animations(Player *player, Renderable *renderable, int move_hor) {
     if (player->is_grounded) {
         if (move_hor == 0) {
-            entity_change_sprite_data(entity, SPRITE_PLAYER_IDLE, 0.3);
+            renderable_change_sprite_data(renderable, SPRITE_PLAYER_IDLE, 0.3);
         } else {
-            entity_change_sprite_data(entity, SPRITE_PLAYER_WALK, 0.3);
+            renderable_change_sprite_data(renderable, SPRITE_PLAYER_WALK, 0.3);
         }
     } /*else {
         entity_change_sprite_data(entity, SPRITE_PLAYER_JUMP, 0.5);
     }*/
 }
 
-static void update_horizontal_movement(Player* player, Entity *entity, int move_hor) {
+static void update_horizontal_movement(Player* player, transform_t *transform, int move_hor) {
     player->hsp = move_hor * player->move_speed;
 
     if (move_hor != 0) {
-        entity->right = move_hor;
+        transform->right = move_hor;
     }
 }
 
@@ -124,32 +110,32 @@ static void update_vertical_movement(Player *player, Entity *entity, TileGrid *t
     }
 }
 
-static void check_collisions_and_move(Player *player, Entity *entity, TileGrid* tiles, RectangleArray *rectangles) {
+static void check_collisions_and_move(Player *player, Entity *entity, transform_t *transform, TileGrid* tiles, RectangleArray *rectangles) {
     RectWrapper *rect = &rectangles->data[entity->id];
     
-    entity->x += player->hsp;
-    rect->rect.x = (int)entity->x;
+    transform->x += player->hsp;
+    rect->rect.x = (int)transform->x;
     
     if (tile_grid_check_collision(tiles, rect->rect)) {
         float push_dir = (player->hsp > 0) ? -1.0f : 1.0f;
         
         while (tile_grid_check_collision(tiles, rect->rect)) {
-            entity->x += push_dir;
-            rect->rect.x = (int)entity->x;
+            transform->x += push_dir;
+            rect->rect.x = (int)transform->x;
         }
         
         player->hsp = 0;
     }
     
-    entity->y += player->vsp;
-    rect->rect.y = (int)entity->y;
+    transform->y += player->vsp;
+    rect->rect.y = (int)transform->y;
     
     if (tile_grid_check_collision(tiles, rect->rect)) {
         float push_dir = (player->vsp > 0) ? -1.0f : 1.0f;
         
         while (tile_grid_check_collision(tiles, rect->rect)) {
-            entity->y += push_dir;
-            rect->rect.y = (int)entity->y;
+            transform->y += push_dir;
+            rect->rect.y = (int)transform->y;
         }
         
         player->vsp = 0;
@@ -171,27 +157,28 @@ static void check_collisions_and_move(Player *player, Entity *entity, TileGrid* 
     }
 }
 
-static void update_scale(Player *player, Entity* entity) {
-    if (entity->image_xscale != player->target_xscale || entity->image_yscale != player->target_yscale) {
-        entity->image_xscale = LERP(entity->image_xscale, player->target_xscale, 0.1f);
-        entity->image_yscale = LERP(entity->image_yscale, player->target_yscale, 0.1f);
+static void update_scale(Player *player, transform_t* transform) {
+    if (transform->image_xscale != player->target_xscale || transform->image_yscale != player->target_yscale) {
+        transform->image_xscale = LERP(transform->image_xscale, player->target_xscale, 0.1f);
+        transform->image_yscale = LERP(transform->image_yscale, player->target_yscale, 0.1f);
     }
 }
 
-static void player_update(Player* player, Entity *entity, TileGrid *tiles, RectangleArray *rectangles, TimerArray *timers) {
+static void player_update(Player* player, Entity *entity, transform_t *transform, Renderable *renderable, TileGrid *tiles, RectangleArray *rectangles, TimerArray *timers) {
     int move_hor = IsKeyDown(KEY_RIGHT) - IsKeyDown(KEY_LEFT);
-    animation(entity);
-    update_horizontal_movement(player, entity, move_hor);
-    change_animations(player, entity, move_hor);
+    update_horizontal_movement(player, transform, move_hor);
+    change_animations(player, renderable, move_hor);
     update_vertical_movement(player, entity, tiles, rectangles, timers);
-    check_collisions_and_move(player, entity, tiles, rectangles);
-    update_scale(player, entity);
+    check_collisions_and_move(player, entity, transform, tiles, rectangles);
+    update_scale(player, transform);
 }
 
-void update_players(PlayerArray* players, EntityArray *entities, TileGrid *tiles, RectangleArray *rectangles, TimerArray *timers) {
+void update_players(PlayerArray* players, EntityArray *entities, TransformArray *transforms, RenderableArray *renderables, TileGrid *tiles, RectangleArray *rectangles, TimerArray *timers) {
     for (int i = 0; i < players->count; i++) {
         Player *player = &players->data[i];
         Entity *entity = &entities->data[i];
-        player_update(player, entity, tiles, rectangles, timers);
+        transform_t *transform = &transforms->data[i];
+        Renderable *renderable = &renderables->data[i];
+        player_update(player, entity, transform, renderable, tiles, rectangles, timers);
     }
 }
