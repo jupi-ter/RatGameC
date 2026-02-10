@@ -1,0 +1,21 @@
+# RatGame Level File
+WIDTH 128 HEIGHT 128
+
+wall 2 3
+wall 3 3
+wall 4 3
+wall 5 3
+wall 6 3
+wall 7 3
+player_position 12 5
+wall 9 8
+wall 10 8
+wall 11 8
+wall 12 8
+wall 13 8
+wall 14 8
+wall 1 11
+wall 2 11
+wall 3 11
+wall 4 11
+wall 5 11

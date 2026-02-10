@@ -1,6 +1,8 @@
 #include "sprite.h"
+#include "stdlib.h"
 #include <stdbool.h>
 #include <stdio.h>
+#include <string.h>
 
 static const struct {
     const char* path;
@@ -10,6 +12,14 @@ static const struct {
     [SPRITE_PLAYER_IDLE] = {"guy_idle", 5},
     [SPRITE_PLAYER_WALK] = {"guy_walk", 5},
     [SPRITE_PLAYER_JUMP] = {"guy_jump", 3},
+};
+
+static const char* TILE_NAMES[] = {
+    [SPRITE_NONE] = "none",
+    [SPRITE_WALL] = "wall",
+    [SPRITE_PLAYER_IDLE] = NULL,
+    [SPRITE_PLAYER_WALK] = NULL,
+    [SPRITE_PLAYER_JUMP] = NULL,
 };
 
 static Sprite sprites[SPRITE_COUNT];
@@ -46,4 +56,13 @@ void sprite_manager_unload_all(void) {
             is_loaded[i] = false;
         }
     }
+}
+
+SpriteID sprite_get_id_from_name(char* name) {
+    for (int i = 0; i < SPRITE_COUNT; i++) {
+        if (strcmp(TILE_NAMES[i], name) == 0) {
+            return i;
+        }
+    }
+    return SPRITE_NONE;
 }

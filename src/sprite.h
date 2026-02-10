@@ -23,5 +23,6 @@ typedef struct Sprite {
 
 Sprite sprite_manager_get_sprite(SpriteID id);
 void sprite_manager_unload_all(void);
+SpriteID sprite_get_id_from_name(char* sprite_name);
 
 #endif

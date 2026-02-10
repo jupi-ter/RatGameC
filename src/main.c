@@ -35,9 +35,7 @@ int main(void)
     int rows = GAME_HEIGHT / TILE_SIZE;
 
     TileGrid tiles = tile_grid_create(cols, rows);
-    //GAME_WIDTH/2
-    //GAME_HEIGHT/2
-    tile_grid_set(&tiles, 8, 8, SPRITE_WALL);
+    tile_grid_load_level(&tiles, LEVEL_ONE);
     
     CircleArray circles = circ_array_create(16);
     RectangleArray rectangles = rect_array_create(16);
@@ -50,8 +48,9 @@ int main(void)
     // THIS SHOULD BE A UNIQUE NUMBER
     //entity_count+=1; //commented for now because of segfault. to fix this we need add_at functions.
 
-    int player_x = GAME_WIDTH / 2;
-    int player_y = (GAME_HEIGHT / 2) - 10;
+    Vector2 player_position = level_get_player_spawnpoint(LEVEL_ONE);
+    int player_x = player_position.x;
+    int player_y = player_position.y;
 
     Rectangle player_rect = {
         .x = (float)player_x,
