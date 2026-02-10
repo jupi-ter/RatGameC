@@ -5,24 +5,28 @@
 #include <stdbool.h>
 #include "collision.h"
 
-typedef enum {
+typedef enum EntityType {
     ENTITY_TYPE_PLAYER,
 } EntityType;
 
 typedef struct Entity {
     uint32_t id;
+    
+    // these should go into a transform parallel array
     float x;
     float y;
-    int up; //vertical flip
-    int right; //horizontal flip
+    int up; //vertical flip (-1, 1)
+    int right; //horizontal flip (-1, 1)
+    float image_xscale;
+    float image_yscale;
     
     // are these necessary?
     EntityType type;
     int size;
-
+    
     // rethink removal
     bool remove;
-
+    
     // these need to go into their own component
     int current_sprite_id;
     int image_index;

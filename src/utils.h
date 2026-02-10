@@ -19,6 +19,8 @@
 
 #define CHOOSE(opt1, opt2) (GET_RANDOM_INT(0,1) == 0 ? opt1 : opt2)
 
+#define LERP(start, end, delta) ((1 - delta) * start + delta * end)
+
 #define REMOVE_AT_SWAPBACK(arr, index) \
     do { \
         if ((index) >= (arr)->count || (index) < 0) break; \

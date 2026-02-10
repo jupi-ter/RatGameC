@@ -2,9 +2,11 @@
 #include "entity.h"
 #include "sprite.h"
 #include "tile.h"
+#include "timer.h"
 #include <raylib.h>
 #include <stdbool.h>
 #include <stdlib.h>
+#include "utils.h"
 
 const float air_speed = 2.5f;
 const float ground_speed = 2.0f;
@@ -50,21 +52,45 @@ static void change_animations(Player *player, Entity *entity, int move_hor) {
         } else {
             entity_change_sprite_data(entity, SPRITE_PLAYER_WALK, 0.3);
         }
-    } else {
+    } /*else {
         entity_change_sprite_data(entity, SPRITE_PLAYER_JUMP, 0.5);
+    }*/
+}
+
+static void update_horizontal_movement(Player* player, Entity *entity, int move_hor) {
+    player->hsp = move_hor * player->move_speed;
+
+    if (move_hor != 0) {
+        entity->right = move_hor;
     }
 }
 
-static void update_horizontal_movement(Player* player, Entity* entity, int move_hor) {
-    player->hsp = move_hor * player->move_speed;
+//callback
+static void stretch(void *context) {
+    Player *player = (Player*)context;
+    player->target_xscale = 1.0f;
+    player->target_yscale = 1.0f;
 }
 
-static void jump(Player *player, Entity *entity) {
+static void jump(Player *player, TimerArray *timers) {
+    // squash
+    player->target_xscale = 0.7f;
+    player->target_yscale = 1.3f;
+
     player->vsp = -jump_height;
     player->buffer_counter = 0;
+    Timer timer = {
+        .frame_target = 15,
+        .completed = false,
+        .counter = 0,
+        .callback = stretch,
+        .context = player
+    };
+    timer_manager_add(timers, timer);
+
 }
 
-static void update_vertical_movement(Player *player, Entity *entity, TileGrid *tiles, RectangleArray *rectangles) {
+static void update_vertical_movement(Player *player, Entity *entity, TileGrid *tiles, RectangleArray *rectangles, TimerArray *timers) {
     bool jump_key = IsKeyDown(KEY_UP);
     bool jump_key_released = IsKeyReleased(KEY_UP);
 
@@ -74,7 +100,7 @@ static void update_vertical_movement(Player *player, Entity *entity, TileGrid *t
         if (player->coyote_counter > 0) {
             player->coyote_counter--;
             if (jump_key)
-                jump(player, entity);
+                jump(player, timers);
         }
     } else {
         player->coyote_counter = coyote_max;
@@ -90,7 +116,7 @@ static void update_vertical_movement(Player *player, Entity *entity, TileGrid *t
     if (player->buffer_counter > 0) {
         player->buffer_counter--;
         if (player->is_grounded)
-            jump(player, entity);
+            jump(player, timers);
     }
 
     if (jump_key_released && player->vsp > 0) {
@@ -145,19 +171,27 @@ static void check_collisions_and_move(Player *player, Entity *entity, TileGrid* 
     }
 }
 
-static void player_update(Player* player, Entity *entity, TileGrid *tiles, RectangleArray *rectangles) {
+static void update_scale(Player *player, Entity* entity) {
+    if (entity->image_xscale != player->target_xscale || entity->image_yscale != player->target_yscale) {
+        entity->image_xscale = LERP(entity->image_xscale, player->target_xscale, 0.1f);
+        entity->image_yscale = LERP(entity->image_yscale, player->target_yscale, 0.1f);
+    }
+}
+
+static void player_update(Player* player, Entity *entity, TileGrid *tiles, RectangleArray *rectangles, TimerArray *timers) {
     int move_hor = IsKeyDown(KEY_RIGHT) - IsKeyDown(KEY_LEFT);
     animation(entity);
     update_horizontal_movement(player, entity, move_hor);
     change_animations(player, entity, move_hor);
-    update_vertical_movement(player, entity, tiles, rectangles);
+    update_vertical_movement(player, entity, tiles, rectangles, timers);
     check_collisions_and_move(player, entity, tiles, rectangles);
+    update_scale(player, entity);
 }
 
-void update_players(PlayerArray* players, EntityArray *entities, TileGrid *tiles, RectangleArray *rectangles) {
+void update_players(PlayerArray* players, EntityArray *entities, TileGrid *tiles, RectangleArray *rectangles, TimerArray *timers) {
     for (int i = 0; i < players->count; i++) {
         Player *player = &players->data[i];
         Entity *entity = &entities->data[i];
-        player_update(player, entity, tiles, rectangles);
+        player_update(player, entity, tiles, rectangles, timers);
     }
 }

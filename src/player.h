@@ -4,6 +4,7 @@
 #include "entity.h"
 #include "tile.h"
 #include "collision.h"
+#include "timer.h"
 #include <stdbool.h>
 
 typedef struct Player {
@@ -14,6 +15,8 @@ typedef struct Player {
     float vsp;
     float move_speed;
     bool is_grounded;
+    float target_xscale;
+    float target_yscale;
 } Player;
 
 typedef struct PlayerArray {
@@ -24,6 +27,6 @@ typedef struct PlayerArray {
 
 PlayerArray player_array_create(int capacity);
 void player_array_add(PlayerArray *players, Player player);
-void update_players(PlayerArray* players, EntityArray *entities, TileGrid *tiles, RectangleArray* rectangles);
+void update_players(PlayerArray* players, EntityArray *entities, TileGrid *tiles, RectangleArray* rectangles, TimerArray *timers);
 
 #endif

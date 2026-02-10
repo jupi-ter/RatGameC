@@ -59,15 +59,15 @@ void entity_manager_draw(EntityArray* arr) {
         Rectangle source = {
             .x = 0,
             .y = 0,
-            .width = current_texture.width,
-            .height = current_texture.height,
+            .width = current_texture.width * e->right,
+            .height = current_texture.height * e->up,
         };
 
         Rectangle dest = {
             .x = (int)e->x,
             .y = (int)e->y,
-            .width = current_texture.width * 1, //xscale
-            .height = current_texture.height * 1, //yscale
+            .width = current_texture.width * e->image_xscale,
+            .height = current_texture.height * e->image_yscale,
         };
 
         DrawTexturePro(current_texture, source, dest, origin, 0 , WHITE);

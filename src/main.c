@@ -7,6 +7,7 @@
 #include "renderer.h"
 #include <stdio.h>
 #include "player.h"
+#include "timer.h"
 
 void handle_collisions(int id1, int id2) {
     printf("%d %d", id1, id2);
@@ -73,6 +74,10 @@ int main(void)
         .current_sprite_id = SPRITE_PLAYER_IDLE,
         .image_index = 0,
         .image_speed = 0.3f,
+        .up = 1,
+        .right = 1,
+        .image_xscale = 1.0f,
+        .image_yscale = 1.0f,
         .frame_counter = 0.0f,
         .collision_shape = COLLISION_RECT
     };
@@ -83,19 +88,24 @@ int main(void)
         .coyote_counter = 0,
         .hsp = 0,
         .vsp = 0,
-        .move_speed = 0
+        .move_speed = 0,
+        .target_xscale = 1.0f,
+        .target_yscale = 1.0f,
     };
 
     rect_array_add(&rectangles, player_collision);
     entity_manager_add(&entities, player_entity);
     player_array_add(&players, player);
 
+    TimerArray timers = timer_manager_create(16);
+
     // END CREATING PLAYER
 
     while (!WindowShouldClose())
     {
-        update_players(&players, &entities, &tiles, &rectangles);
+        update_players(&players, &entities, &tiles, &rectangles, &timers);
         check_collisions(&rectangles, &circles, handle_collisions);
+        timer_manager_update(&timers);
 
         BeginDrawing();
         ClearBackground(BLACK);
