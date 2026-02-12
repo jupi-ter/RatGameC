@@ -7,24 +7,24 @@ void begin_render(RenderTexture2D renderTarget) {
     ClearBackground(WHITE);
 }
 
-void end_render(RenderTexture2D renderTarget) {
+void end_render(int screen_w, int screen_h, int game_w, int game_h ,RenderTexture2D renderTarget) {
     EndTextureMode();
         
-    float scale_x = (float)SCREEN_WIDTH / GAME_WIDTH;
-    float scale_y = (float)SCREEN_HEIGHT / GAME_HEIGHT;
+    float scale_x = (float)screen_w / game_w;
+    float scale_y = (float)screen_h / game_h;
     float scale = MIN(scale_x, scale_y);
     
-    float scaled_w = GAME_WIDTH * scale;
-    float scaled_h = GAME_HEIGHT * scale;
+    float scaled_w = game_w * scale;
+    float scaled_h = game_h * scale;
     
-    float offset_x = (SCREEN_WIDTH - scaled_w) / 2;
-    float offset_y = (SCREEN_HEIGHT - scaled_h) / 2;
+    float offset_x = (screen_w - scaled_w) / 2;
+    float offset_y = (screen_h - scaled_h) / 2;
     
     Rectangle source = {
         .x = 0,
         .y = 0,
-        .width = GAME_WIDTH,
-        .height = -GAME_HEIGHT
+        .width = game_w,
+        .height = -game_h
     };
 
     Rectangle dest = {

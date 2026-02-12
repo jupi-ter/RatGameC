@@ -90,19 +90,29 @@ void tile_grid_draw_debug(TileGrid* grid) {
     }
 }
 
-bool tile_grid_load_level(TileGrid *tiles, LevelID level_id) {
+LevelData tile_grid_load_level(LevelID level_id) {
+    LevelData level_data = {
+        .success = false,
+        .width = 0,
+        .height = 0,
+        .player_spawn_x = 0,
+        .player_spawn_y = 0,
+    };
+    
     char filename[64];
     sprintf(filename, "./assets/levels/lvl%d.rat", level_id);
 
     FILE* file = fopen(filename, "r");
     if (!file) {
         printf("Error: could not open file for loading: %s\n", filename);
-        return false;
+        return level_data;
     }
 
     char line[256];
-    //int width = 0; int height = 0;
-    //bool metadata_read = false;
+    bool metadata_read = false;
+    int width, height;
+
+    TileGrid tiles;
 
     while (fgets(line, sizeof(line), file)) {
         //skip comments and empty lines
@@ -111,63 +121,52 @@ bool tile_grid_load_level(TileGrid *tiles, LevelID level_id) {
         //remove trailing newline
         line[strcspn(line, "\r\n")] = 0;
         
-        //read metadata (WIDTH HEIGHT)
-        
-        //read tile data
-        char tile_name[64];
-        int x, y;
-        
-        if (sscanf(line, "%63s %d %d", tile_name, &x, &y) == 3) {
-            // Skip metadata entries
-            bool is_metadata = false;
-            for (int i = 0; i < TILE_METADATA_COUNT; i++) {
-                if (strcmp(tile_name, TILE_METADATA_NAME[i]) == 0) {
-                    is_metadata = true;
-                    break;
+        if (!metadata_read) {
+            if (sscanf(line, "WIDTH %d HEIGHT %d", &width, &height) == 2) {
+                if (width <= 0 || height <= 0 || width % TILE_SIZE != 0 || height % TILE_SIZE != 0) {
+                    printf("Error: Invalid dimensions (must be positive and divisible by %d)\n", TILE_SIZE);
+                    fclose(file);
+                    return level_data;
                 }
-            }
-            if (is_metadata) continue;
 
-            SpriteID sprite = sprite_get_id_from_name(tile_name);
-            if (sprite == SPRITE_NONE && strcmp(tile_name, "none") != 0) {
+                level_data.width = width;
+                level_data.height = height;
+                tiles = tile_grid_create((int)(width / TILE_SIZE), (int)(height / TILE_SIZE));
+                metadata_read = true;
                 continue;
             }
-            tile_grid_set(tiles, x, y, sprite);
-        } else {
-            printf("Warning: Invalid tile line, skipping: %s\n", line);
         }
-    }
-    
-    fclose(file);
-    
-    printf("Loaded level from: %s\n", filename);
-    return true;
-}
-
-Vector2 level_get_player_spawnpoint(LevelID level_id) {
-    Vector2 position = { .x = 0, .y = 0};
-    char filename[64];
-    sprintf(filename, "./assets/levels/lvl%d.rat", level_id);
-    FILE* file = fopen(filename, "r");
-    if (!file) {
-        printf("Error: could not open file for loading: %s\n", filename);
-        return position;
-    }
-    char line[256];
-    while (fgets(line, sizeof(line), file)) {
-        if (line[0] == '#' || line[0] == '\n') continue;
-        line[strcspn(line, "\n")] = 0;
         
-        char tile_name[64];
-        int x, y;
-        if (sscanf(line, "%63s %d %d", tile_name, &x, &y) == 3) {
-            if (strcmp(tile_name, TILE_METADATA_NAME[PLAYER_POSITION]) == 0) {
-                position = (Vector2){ .x = x * TILE_SIZE, .y = y * TILE_SIZE };
-                break;
+        if (metadata_read) {
+            char tile_name[64];
+            int x, y;
+
+            if (sscanf(line, "%63s %d %d", tile_name, &x, &y) == 3) {
+
+                // FIXME: make this better
+                // handle metadata
+                if (strcmp(tile_name, TILE_METADATA_NAME[PLAYER_POSITION]) == 0) {
+                    level_data.player_spawn_x = x * TILE_SIZE;
+                    level_data.player_spawn_y = y * TILE_SIZE;
+                    continue;
+                }
+                // proceed as usual
+
+                SpriteID sprite = sprite_get_id_from_name(tile_name);
+                if (sprite == SPRITE_NONE && strcmp(tile_name, "none") != 0) {
+                    continue;
+                }
+                tile_grid_set(&tiles, x, y, sprite);
+            } else {
+                //printf("Warning: Invalid tile line, skipping: %s\n", line);
             }
         }
     }
     
     fclose(file);
-    return position;
+    
+    level_data.tiles = tiles;
+    level_data.success = true;
+    printf("Loaded level from: %s\n", filename);
+    return level_data;
 }

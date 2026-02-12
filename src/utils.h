@@ -3,11 +3,6 @@
 
 #include <stdlib.h>
 
-#define SCREEN_WIDTH 512
-#define SCREEN_HEIGHT 480
-#define GAME_WIDTH 256
-#define GAME_HEIGHT 240
-
 //square
 #define TILE_SIZE 8
 

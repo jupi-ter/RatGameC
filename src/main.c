@@ -23,19 +23,29 @@ void handle_collisions(int id1, int id2) {
 
 int main(void)
 {
-    int entity_count = 0;
-
-    InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "RatGame");
-    SetTargetFPS(60);
-
-    RenderTexture2D renderTarget = LoadRenderTexture(GAME_WIDTH, GAME_HEIGHT);
-
-    int cols = GAME_WIDTH / TILE_SIZE;
-    int rows = GAME_HEIGHT / TILE_SIZE;
-
-    TileGrid tiles = tile_grid_create(cols, rows);
-    tile_grid_load_level(&tiles, LEVEL_TWO);
+    LevelID level = LEVEL_ONE;
+    LevelData level_data = tile_grid_load_level(level);
     
+    if (!level_data.success) {
+        printf("Something failed while trying to load level %d", level);
+        return 1;
+    }
+    
+    TileGrid tiles = level_data.tiles;
+
+    int SCALE_FACTOR = 4;
+    int game_w = level_data.width;
+    int game_h = level_data.height;
+    int screen_w = game_w * SCALE_FACTOR;
+    int screen_h = game_h * SCALE_FACTOR;
+
+    InitWindow(screen_w, screen_h, "RatGame");
+    SetTargetFPS(60);
+    
+    RenderTexture2D render_target = LoadRenderTexture(game_w, game_h);
+    
+    // array declaration
+    int entity_count = 0;
     CircleArray circles = circ_array_create(16);
     RectangleArray rectangles = rect_array_create(16);
     TransformArray transforms = transform_manager_create(16);
@@ -49,9 +59,8 @@ int main(void)
     // THIS SHOULD BE A UNIQUE NUMBER
     //entity_count+=1; //commented for now because of segfault. to fix this we need add_at functions.
 
-    Vector2 player_position = level_get_player_spawnpoint(LEVEL_ONE);
-    int player_x = player_position.x;
-    int player_y = player_position.y;
+    int player_x = level_data.player_spawn_x;
+    int player_y = level_data.player_spawn_y;
 
     Rectangle player_rect = {
         .x = (float)player_x,
@@ -119,7 +128,7 @@ int main(void)
         ClearBackground(BLUE);
         
         // BEGIN RENDERING
-        begin_render(renderTarget);
+        begin_render(render_target);
         
         tile_grid_draw(&tiles);
         renderable_manager_draw(&renderables, &transforms);
@@ -133,7 +142,7 @@ int main(void)
         // DrawText(buffer, 8, 8, 8, BLACK);
  
         // END RENDERING
-        end_render(renderTarget);
+        end_render(screen_w, screen_h, game_w, game_h, render_target);
 
         EndDrawing();
     }

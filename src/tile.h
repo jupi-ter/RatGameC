@@ -11,6 +11,15 @@ typedef struct TileGrid {
     int height;
 } TileGrid;
 
+typedef struct LevelData {
+    bool success;
+    int width;
+    int height;
+    int player_spawn_x;
+    int player_spawn_y;
+    TileGrid tiles;
+} LevelData;
+
 typedef enum LevelID {
     LEVEL_NONE,
     LEVEL_ONE,
@@ -29,8 +38,7 @@ SpriteID tile_grid_get(TileGrid *grid, int x, int y);
 bool tile_grid_check_collision(TileGrid *grid, Rectangle bbox);
 void tile_grid_draw(TileGrid *grid);
 void tile_grid_draw_debug(TileGrid *grid);
-bool tile_grid_load_level(TileGrid *grid, LevelID level_id);
-Vector2 level_get_player_spawnpoint(LevelID level_id);
+LevelData tile_grid_load_level(LevelID level_id);
 extern const char* TILE_METADATA_NAME[];
 
 #endif 
