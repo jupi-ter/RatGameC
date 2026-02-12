@@ -9,17 +9,13 @@ static const struct {
     int total_frames;
 } SPRITE_DATA[] = {
     [SPRITE_WALL] = {"wall", 1},
-    [SPRITE_PLAYER_IDLE] = {"guy_idle", 5},
-    [SPRITE_PLAYER_WALK] = {"guy_walk", 5},
-    [SPRITE_PLAYER_JUMP] = {"guy_jump", 3},
+    [SPRITE_PLAYER] = {"rat", 2},
 };
 
 static const char* TILE_NAMES[] = {
     [SPRITE_NONE] = "none",
     [SPRITE_WALL] = "wall",
-    [SPRITE_PLAYER_IDLE] = NULL,
-    [SPRITE_PLAYER_WALK] = NULL,
-    [SPRITE_PLAYER_JUMP] = NULL,
+    [SPRITE_PLAYER] = NULL,
 };
 
 static Sprite sprites[SPRITE_COUNT];
@@ -50,7 +46,7 @@ void sprite_manager_unload_all(void) {
         if (is_loaded[i]) {
             Sprite *spr = &sprites[i];
             for (int j = 0; j < spr->total_frames; j++) {
-                UnloadTexture(spr->frames[i]);
+                UnloadTexture(spr->frames[j]);
             }
             spr->total_frames = 0;
             is_loaded[i] = false;

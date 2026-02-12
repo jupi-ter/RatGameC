@@ -31,17 +31,17 @@ void player_array_add(PlayerArray *players, Player player) {
     players->data[players->count++] = player;
 }
 
-static void change_animations(Player *player, Renderable *renderable, int move_hor) {
+/*static void change_animations(Player *player, Renderable *renderable, int move_hor) {
     if (player->is_grounded) {
         if (move_hor == 0) {
             renderable_change_sprite_data(renderable, SPRITE_PLAYER_IDLE, 0.3);
         } else {
             renderable_change_sprite_data(renderable, SPRITE_PLAYER_WALK, 0.3);
         }
-    } /*else {
-        entity_change_sprite_data(entity, SPRITE_PLAYER_JUMP, 0.5);
-    }*/
-}
+    }// else {
+    //    entity_change_sprite_data(entity, SPRITE_PLAYER_JUMP, 0.5);
+    //}
+}*/
 
 static void update_horizontal_movement(Player* player, transform_t *transform, int move_hor) {
     player->hsp = move_hor * player->move_speed;
@@ -167,7 +167,6 @@ static void update_scale(Player *player, transform_t* transform) {
 static void player_update(Player* player, Entity *entity, transform_t *transform, Renderable *renderable, TileGrid *tiles, RectangleArray *rectangles, TimerArray *timers) {
     int move_hor = IsKeyDown(KEY_RIGHT) - IsKeyDown(KEY_LEFT);
     update_horizontal_movement(player, transform, move_hor);
-    change_animations(player, renderable, move_hor);
     update_vertical_movement(player, entity, tiles, rectangles, timers);
     check_collisions_and_move(player, entity, transform, tiles, rectangles);
     update_scale(player, transform);

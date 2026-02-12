@@ -17,12 +17,8 @@ void handle_collisions(int id1, int id2) {
 
 /*
     TODO:
-    * create the renderables struct and refactor.
-    * analyze structure, if favorable: create the transform struct and refactor.
     * move entity extenders (player, enemy, etc) to separate, cleaner functions that don't take up main space.
-    * move tiles to a grid with a 2d boolean array and make their sprite drawing even simpler
     * move tile collisions to regular collisions (unsure)
-    * create the level loader. if feeling spicy, create a gui level editor.
 */
 
 int main(void)
@@ -44,8 +40,9 @@ int main(void)
     RectangleArray rectangles = rect_array_create(16);
     TransformArray transforms = transform_manager_create(16);
     PlayerArray players = player_array_create(4);
-    EntityArray entities = entity_manager_create(16);
+    EntityArray entities = entity_manager_create(16); // remove
     RenderableArray renderables = renderable_manager_create(16);
+
     // BEGIN CREATING PLAYER
 
     // INCREMENT ENTITY COUNT ON EVERY INSTANTIATION
@@ -84,9 +81,9 @@ int main(void)
     };
     
     Renderable player_render = {
-        .current_sprite_id = SPRITE_PLAYER_IDLE,
+        .current_sprite_id = SPRITE_PLAYER,
         .image_index = 0,
-        .image_speed = 0.3f,
+        .image_speed = 0.1f,
         .frame_counter = 0.0f,
     };
 
@@ -141,6 +138,8 @@ int main(void)
         EndDrawing();
     }
 
+    FREE_ARRAY(&renderables);
+    FREE_ARRAY(&transforms);
     FREE_ARRAY(&rectangles);
     FREE_ARRAY(&circles);
     tile_grid_free(&tiles);

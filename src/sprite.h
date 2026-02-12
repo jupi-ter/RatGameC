@@ -10,9 +10,7 @@
 typedef enum SpriteID {
     SPRITE_NONE,
     SPRITE_WALL,
-    SPRITE_PLAYER_IDLE,
-    SPRITE_PLAYER_WALK,
-    SPRITE_PLAYER_JUMP,
+    SPRITE_PLAYER,
     SPRITE_COUNT
 } SpriteID;
 
