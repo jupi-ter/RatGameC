@@ -5,33 +5,33 @@
 #include <stdbool.h>
 #include "collision.h"
 
-typedef enum EntityType {
-    ENTITY_TYPE_PLAYER,
-} EntityType;
-
-typedef struct Entity {
-    uint32_t id;
-    
-    // rethink removal
-    //bool remove;
-
-    // entities shouldn't directly own their collisions
-    // neither should they hold a pointer to them
-    // we need to use SoA here, but that requires refactoring the collision management a little.
-    CollisionShape collision_shape;
-} Entity;
-
-typedef struct EntityArray {
-    Entity* data;
+typedef struct {
+    CollisionShape* collision_types;
     int count;
     int capacity;
-} EntityArray;
+} EntityRegistry;
 
-EntityArray entity_manager_create(int capacity);
-void entity_manager_add(EntityArray* arr, Entity entity);
+// Core functions
+EntityRegistry entity_registry_create(int initial_capacity);
+void entity_registry_free(EntityRegistry* reg);
 
-// maybe this could exist in the game loop for the sole purpose of checking deletion.
-// for now, it's deprecated.
-//void entity_manager_update(EntityArray* arr, TileArray *tile_arr);
+// Creates entity and ensures all arrays have capacity
+uint32_t entity_create(EntityRegistry* reg,
+    TransformArray* transforms,
+    RenderableArray* renderables,
+    CircleArray* circles,
+    RectangleArray* rectangles);
+
+// Destroys entity and performs swap-and-pop on all engine arrays
+// Returns the entity_id that was moved (last_index), or -1 if none moved
+// Game code must update references from moved_id -> entity_id
+int entity_destroy(EntityRegistry* reg, uint32_t entity_id,
+    TransformArray* transforms,
+    RenderableArray* renderables,
+    CircleArray* circles,
+    RectangleArray* rectangles);
+
+void entity_set_collision(EntityRegistry* reg, uint32_t entity_id, CollisionShape shape);
+CollisionShape entity_get_collision(EntityRegistry* reg, uint32_t entity_id);
 
 #endif
