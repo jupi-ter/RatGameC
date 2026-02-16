@@ -1,4 +1,5 @@
 #include "renderable.h"
+#include "entity.h"
 #include "sprite.h"
 #include "transform.h"
 #include <stdlib.h>
@@ -20,9 +21,10 @@ void renderable_manager_add(RenderableArray* renderables, Renderable renderable)
     renderables->data[renderables->count++] = renderable;
 }
 
-void renderable_manager_update(RenderableArray *renderables) {
-    for (int i = 0; i < renderables->count; i++) {
-        Renderable *renderable = &renderables->data[i];
+void renderable_manager_update(RenderableArray* renderables, EntityRegistry* reg) {
+    // Only update active entities
+    for (int i = 0; i < reg->count; i++) {
+        Renderable* renderable = &renderables->data[i];
         renderable->frame_counter += renderable->image_speed;
 
         if (renderable->frame_counter >= 1.0f) {
@@ -36,8 +38,9 @@ void renderable_manager_update(RenderableArray *renderables) {
     }
 }
 
-void renderable_manager_draw(RenderableArray *renderables, TransformArray *transforms) {
-    for (int i = 0; i < renderables->count; i++) {
+void renderable_manager_draw(RenderableArray* renderables, TransformArray* transforms, EntityRegistry* reg) {
+    // Only draw active entities
+    for (int i = 0; i < reg->count; i++) {
         Renderable renderable = renderables->data[i];
         transform_t transform = transforms->data[i];
         Sprite sprite_array = sprite_manager_get_sprite(renderable.current_sprite_id);
@@ -62,7 +65,7 @@ void renderable_manager_draw(RenderableArray *renderables, TransformArray *trans
             .height = current_texture.height * transform.image_yscale,
         };
 
-        DrawTexturePro(current_texture, source, dest, origin, 0 , WHITE);
+        DrawTexturePro(current_texture, source, dest, origin, 0, WHITE);
     }
 }
 

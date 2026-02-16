@@ -41,4 +41,4 @@ void tile_grid_draw_debug(TileGrid *grid);
 LevelData tile_grid_load_level(LevelID level_id);
 extern const char* TILE_METADATA_NAME[];
 
-#endif 
+#endif
