@@ -8,6 +8,7 @@
 #include "timer.h"
 #include "transform.h"
 #include "renderable.h"
+#include "game_generated.h"
 
 void handle_collisions(int id1, int id2) {
     printf("%d %d\n", id1, id2);
@@ -27,13 +28,14 @@ int main(void)
     
     RenderTexture2D render_target = LoadRenderTexture(game_w, game_h);
     
-    // Create entity registry and component arrays
-    EntityRegistry registry = entity_registry_create(16);
-    TransformArray transforms = transform_manager_create(16);
-    RenderableArray renderables = renderable_manager_create(16);
-    CircleArray circles = circ_array_create(16);
-    RectangleArray rectangles = rect_array_create(16);
-    TimerArray timers = timer_manager_create(16);
+    // Create game state with entity registry and component arrays
+    GameState game = {0};
+    game.registry = entity_registry_create(16);
+    game.transforms = transform_manager_create(16);
+    game.renderables = renderable_manager_create(16);
+    game.circles = circ_array_create(16);
+    game.rectangles = rect_array_create(16);
+    game.timers = timer_manager_create(16);
     
     // Example: Create a test entity (this would be done by codegen in real usage)
     // uint32_t test_entity = entity_create(&registry, &transforms, &renderables, &circles, &rectangles);
@@ -45,9 +47,9 @@ int main(void)
     while (!WindowShouldClose())
     {
         // Update systems
-        check_collisions(&registry, &rectangles, &circles, handle_collisions);
-        timer_manager_update(&timers);
-        renderable_manager_update(&renderables, &registry);
+        check_collisions(&game.registry, &game.rectangles, &game.circles, handle_collisions);
+        timer_manager_update(&game.timers);
+        renderable_manager_update(&game.renderables, &game.registry);
         
         BeginDrawing();
         ClearBackground(BLUE);
@@ -55,7 +57,7 @@ int main(void)
         // BEGIN RENDERING
         begin_render(render_target);
         
-        renderable_manager_draw(&renderables, &transforms, &registry);
+        renderable_manager_draw(&game.renderables, &game.transforms, &game.registry);
         
         // END RENDERING
         end_render(screen_w, screen_h, game_w, game_h, render_target);
@@ -63,12 +65,12 @@ int main(void)
     }
     
     // Cleanup
-    entity_registry_free(&registry);
-    FREE_ARRAY(&renderables);
-    FREE_ARRAY(&transforms);
-    FREE_ARRAY(&rectangles);
-    FREE_ARRAY(&circles);
-    FREE_ARRAY(&timers);
+    entity_registry_free(&game.registry);
+    FREE_ARRAY(&game.renderables);
+    FREE_ARRAY(&game.transforms);
+    FREE_ARRAY(&game.rectangles);
+    FREE_ARRAY(&game.circles);
+    FREE_ARRAY(&game.timers);
     sprite_manager_unload_all();
     CloseWindow();
     return 0;

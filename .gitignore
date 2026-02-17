@@ -3,4 +3,3 @@ build/
 *.out
 /bullshit
 /bullshit/*
-game_generated.*
