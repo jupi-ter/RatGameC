@@ -43,7 +43,7 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 clean:
-	$(RM) $(BUILD_DIR)
+	rm -f $(OBJS) $(TARGET)
 
 run: $(TARGET)
 	$(RUN_CMD)
