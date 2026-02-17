@@ -2,7 +2,6 @@
 #include "utils.h"
 #include "entity.h"
 #include "sprite.h"
-#include "tile.h"
 #include "collision.h"
 #include "renderer.h"
 #include <stdio.h>
@@ -14,26 +13,13 @@ void handle_collisions(int id1, int id2) {
     printf("%d %d\n", id1, id2);
 }
 
-/*
-    TODO:
-    * move entity extenders (player, enemy, etc) to separate, cleaner functions that don't take up main space.
-    * move tile collisions to regular collisions (unsure)
-*/
-
 int main(void)
 {
-    LevelID level = LEVEL_ONE;
-    LevelData level_data = tile_grid_load_level(level);
-    
-    if (!level_data.success) {
-        printf("Something failed while trying to load level %d", level);
-        return 1;
-    }
-    
-    TileGrid tiles = level_data.tiles;
     int SCALE_FACTOR = 4;
-    int game_w = level_data.width;
-    int game_h = level_data.height;
+    //these takes their values from the loaded level, but for simplicity we remove that 
+    int game_w = 128; 
+    int game_h = 128;
+
     int screen_w = game_w * SCALE_FACTOR;
     int screen_h = game_h * SCALE_FACTOR;
     InitWindow(screen_w, screen_h, "RatGame");
@@ -69,15 +55,8 @@ int main(void)
         // BEGIN RENDERING
         begin_render(render_target);
         
-        tile_grid_draw(&tiles);
         renderable_manager_draw(&renderables, &transforms, &registry);
-        // tile_grid_draw_debug(&tiles);
-        // draw_collisions(&rectangles, &circles);
- 
-        // char buffer[16];
-        // sprintf(buffer,"%d", GetFPS());
-        // DrawText(buffer, 8, 8, 8, BLACK);
- 
+        
         // END RENDERING
         end_render(screen_w, screen_h, game_w, game_h, render_target);
         EndDrawing();
@@ -90,7 +69,6 @@ int main(void)
     FREE_ARRAY(&rectangles);
     FREE_ARRAY(&circles);
     FREE_ARRAY(&timers);
-    tile_grid_free(&tiles);
     sprite_manager_unload_all();
     CloseWindow();
     return 0;
