@@ -2,6 +2,7 @@
 #define COLLISION_H
 
 #include <raylib.h>
+#include "forward.h"
 
 typedef enum CollisionShape {
     COLLISION_NONE,

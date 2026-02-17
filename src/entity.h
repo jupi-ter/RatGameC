@@ -3,9 +3,10 @@
 
 #include <stdint.h>
 #include <stdbool.h>
+#include "forward.h"
 #include "collision.h"
 
-typedef struct {
+typedef struct EntityRegistry {
     CollisionShape* collision_types;
     int count;
     int capacity;

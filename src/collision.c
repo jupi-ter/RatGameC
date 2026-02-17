@@ -112,4 +112,9 @@ void draw_collisions(RectangleArray* rectangles, CircleArray* circles) {
         RectWrapper c1 = rectangles->data[i];
         DrawRectangleRec(c1.rect, fuchsia);
     }
+
+    for (int i = 0; i < circles->count; i++) {
+        Circle c1 = circles->data[1];
+        DrawCircle(c1.position.x, c1.position.y ,c1.radius, fuchsia);
+    }
 }

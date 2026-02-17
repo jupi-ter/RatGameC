@@ -1,3 +1,4 @@
+#include "forward.h"
 #include "renderable.h"
 #include "entity.h"
 #include "sprite.h"
