@@ -24,7 +24,7 @@ void renderable_manager_add(RenderableArray* renderables, Renderable renderable)
 
 void renderable_manager_update(RenderableArray* renderables, EntityRegistry* reg) {
     // Only update active entities
-    for (int i = 0; i < reg->count; i++) {
+    for (int i = 0; i < (int)reg->count; i++) {
         Renderable* renderable = &renderables->data[i];
         renderable->frame_counter += renderable->image_speed;
 
@@ -41,7 +41,7 @@ void renderable_manager_update(RenderableArray* renderables, EntityRegistry* reg
 
 void renderable_manager_draw(RenderableArray* renderables, TransformArray* transforms, EntityRegistry* reg) {
     // Only draw active entities
-    for (int i = 0; i < reg->count; i++) {
+    for (int i = 0; i < (int)reg->count; i++) {
         Renderable renderable = renderables->data[i];
         transform_t transform = transforms->data[i];
         Sprite sprite_array = sprite_manager_get_sprite(renderable.current_sprite_id);

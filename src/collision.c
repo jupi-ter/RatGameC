@@ -42,7 +42,7 @@ void check_collisions(EntityRegistry* reg, RectangleArray* rectangles, CircleArr
     int circ_ids[1024];
     int circ_count = 0;
     
-    for (int i = 0; i < reg->count; i++) {
+    for (int i = 0; i < (int)reg->count; i++) {
         CollisionShape shape = entity_get_collision(reg, i);
         if (shape == COLLISION_RECT) {
             rect_ids[rect_count++] = i;

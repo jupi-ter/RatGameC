@@ -64,12 +64,12 @@ int entity_destroy(EntityRegistry* reg, uint32_t entity_id,
     RenderableArray* renderables,
     CircleArray* circles,
     RectangleArray* rectangles) {
-    if (entity_id >= reg->count) return -1;
+    if (entity_id >= (uint32_t)reg->count) return -1;
     
     int last_index = reg->count - 1;
     
     // If we're not deleting the last entity, swap last into this slot
-    if (entity_id != last_index) {
+    if (entity_id != (uint32_t)last_index) {
         CollisionShape last_collision = reg->collision_types[last_index];
         
         // Swap all component data

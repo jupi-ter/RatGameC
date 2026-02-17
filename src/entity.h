@@ -8,8 +8,8 @@
 
 typedef struct EntityRegistry {
     CollisionShape* collision_types;
-    int count;
-    int capacity;
+    uint32_t count;
+    uint32_t capacity;
 } EntityRegistry;
 
 // Core functions
