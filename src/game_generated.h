@@ -18,4 +18,9 @@ typedef struct GameState {
     TimerArray timers;
 } GameState;
 
+// Generic interface - engine calls these
+void game_init(GameState* game);
+void game_update(GameState* game);
+void game_cleanup(GameState* game);
+
 #endif
