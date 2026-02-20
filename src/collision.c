@@ -1,8 +1,10 @@
 #include "collision.h"
 #include "entity.h"
 #include "forward.h"
+#include "game_generated.h"
 #include "raylib.h"
 #include <stdlib.h>
+#include <stdio.h>
 
 CircleArray circ_array_create(int capacity) {
     CircleArray circles = {0};
@@ -36,13 +38,41 @@ void rect_array_add(RectangleArray* rectangles, RectWrapper rect) {
     rectangles->data[rectangles->count++] = rect;
 }
 
-void check_collisions(GameState* game, RectangleArray* rectangles, CircleArray* circles, CollisionCallback on_collision) {
+void sync_collisions_with_transforms(GameState* game) {
+    printf("Syncing %d rectangles\n", game->rectangles.count);
+    for (int i = 0; i < game->rectangles.count; i++) {
+        uint32_t owner = game->rectangles.data[i].owner_id;
+        if (owner < game->registry.count) {
+            game->rectangles.data[i].rect.x = game->transforms.data[owner].x;
+            game->rectangles.data[i].rect.y = game->transforms.data[owner].y;
+            printf("Entity %d collision at (%.1f, %.1f) size (%.1f, %.1f)\n",
+                   owner,
+                   game->rectangles.data[i].rect.x,
+                   game->rectangles.data[i].rect.y,
+                   game->rectangles.data[i].rect.width,
+                   game->rectangles.data[i].rect.height);
+        }
+    }
+
+    // Sync circles
+    for (int i = 0; i < game->circles.count; i++) {
+        uint32_t owner = game->circles.data[i].owner_id;
+        if (owner < game->registry.count) {
+            game->circles.data[i].position.x = game->transforms.data[owner].x;
+            game->circles.data[i].position.y = game->transforms.data[owner].y;
+        }
+    }
+}
+
+void check_collisions(GameState* game, CollisionCallback on_collision) {
     //FIXME: this is good but we need to add a spatial grid on top so we don't have issues with games with too many entities.
     int rect_ids[1024];
     int rect_count = 0;
     int circ_ids[1024];
     int circ_count = 0;
-    EntityRegistry* reg = game->registry;
+    EntityRegistry* reg = &game->registry;
+    RectangleArray* rectangles = &game->rectangles;
+    CircleArray* circles = &game->circles;
 
     for (int i = 0; i < (int)reg->count; i++) {
         CollisionShape shape = entity_get_collision(reg, i);

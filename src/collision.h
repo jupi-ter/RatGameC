@@ -3,7 +3,6 @@
 
 #include <raylib.h>
 #include "forward.h"
-#include "game_generated.h"
 
 typedef enum CollisionShape {
     COLLISION_NONE,
@@ -41,7 +40,8 @@ CircleArray circ_array_create(int capacity);
 RectangleArray rect_array_create(int capacity);
 void circ_array_add(CircleArray* arr, Circle circ);
 void rect_array_add(RectangleArray* arr, RectWrapper rect);
-void check_collisions(GameState* game, RectangleArray* rectangles, CircleArray* circles, CollisionCallback on_collision);
+void sync_collisions_with_transforms(GameState* game);
+void check_collisions(GameState* game, CollisionCallback on_collision);
 void draw_collisions(RectangleArray* rectangles, CircleArray* circles);
 
 #endif

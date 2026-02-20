@@ -11,6 +11,7 @@
 #include "game_generated.h"
 
 void handle_collisions(GameState* game, int id1, int id2) {
+    printf("COLLISION DETECTED: entity %d collided with entity %d\n", id1, id2);
     dispatch_collision(game, id1, id2);
 }
 
@@ -51,7 +52,8 @@ int main(void)
     {
         // Update systems
         game_update(&game);
-        check_collisions(&game.registry, &game.rectangles, &game.circles, handle_collisions);
+        sync_collisions_with_transforms(&game);
+        check_collisions(&game, handle_collisions);
         timer_manager_update(&game.timers);
         renderable_manager_update(&game.renderables, &game.registry);
 
