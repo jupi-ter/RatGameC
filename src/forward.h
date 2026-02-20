@@ -9,5 +9,6 @@ typedef struct TransformArray TransformArray;
 typedef struct RenderableArray RenderableArray;
 typedef struct CircleArray CircleArray;
 typedef struct RectangleArray RectangleArray;
+typedef struct GameState GameState;
 
 #endif

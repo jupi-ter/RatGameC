@@ -3,6 +3,7 @@
 
 #include <raylib.h>
 #include "forward.h"
+#include "game_generated.h"
 
 typedef enum CollisionShape {
     COLLISION_NONE,
@@ -10,7 +11,7 @@ typedef enum CollisionShape {
     COLLISION_CIRC
 } CollisionShape;
 
-typedef void (*CollisionCallback)(int id1, int id2);
+typedef void (*CollisionCallback)(GameState* game, int id1, int id2);
 
 typedef struct RectWrapper {
     int owner_id;
@@ -40,7 +41,7 @@ CircleArray circ_array_create(int capacity);
 RectangleArray rect_array_create(int capacity);
 void circ_array_add(CircleArray* arr, Circle circ);
 void rect_array_add(RectangleArray* arr, RectWrapper rect);
-void check_collisions(EntityRegistry* reg, RectangleArray* rectangles, CircleArray* circles, CollisionCallback on_collision);
+void check_collisions(GameState* game, RectangleArray* rectangles, CircleArray* circles, CollisionCallback on_collision);
 void draw_collisions(RectangleArray* rectangles, CircleArray* circles);
 
 #endif

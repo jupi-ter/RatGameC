@@ -10,8 +10,8 @@
 #include "renderable.h"
 #include "game_generated.h"
 
-void handle_collisions(int id1, int id2) {
-    printf("%d %d\n", id1, id2);
+void handle_collisions(GameState* game, int id1, int id2) {
+    dispatch_collision(game, id1, id2);
 }
 
 int main(void)
@@ -28,7 +28,7 @@ int main(void)
 
     RenderTexture2D render_target = LoadRenderTexture(game_w, game_h);
 
-    // Create game state with entity registry and component arrays
+    // Create game state with entity registry angamed component arrays
     GameState game = {0};
     game.registry = entity_registry_create(16);
     game.transforms = transform_manager_create(16);

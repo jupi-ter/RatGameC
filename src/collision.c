@@ -1,5 +1,6 @@
 #include "collision.h"
 #include "entity.h"
+#include "forward.h"
 #include "raylib.h"
 #include <stdlib.h>
 
@@ -35,13 +36,14 @@ void rect_array_add(RectangleArray* rectangles, RectWrapper rect) {
     rectangles->data[rectangles->count++] = rect;
 }
 
-void check_collisions(EntityRegistry* reg, RectangleArray* rectangles, CircleArray* circles, CollisionCallback on_collision) {
+void check_collisions(GameState* game, RectangleArray* rectangles, CircleArray* circles, CollisionCallback on_collision) {
     //FIXME: this is good but we need to add a spatial grid on top so we don't have issues with games with too many entities.
     int rect_ids[1024];
     int rect_count = 0;
     int circ_ids[1024];
     int circ_count = 0;
-    
+    EntityRegistry* reg = game->registry;
+
     for (int i = 0; i < (int)reg->count; i++) {
         CollisionShape shape = entity_get_collision(reg, i);
         if (shape == COLLISION_RECT) {
@@ -50,7 +52,7 @@ void check_collisions(EntityRegistry* reg, RectangleArray* rectangles, CircleArr
             circ_ids[circ_count++] = i;
         }
     }
-    
+
     // rect-rect
     for (int i = 0; i < rect_count; i++) {
         for (int j = i + 1; j < rect_count; j++) {
@@ -58,10 +60,10 @@ void check_collisions(EntityRegistry* reg, RectangleArray* rectangles, CircleArr
             int id2 = rect_ids[j];
             RectWrapper c1 = rectangles->data[id1];
             RectWrapper c2 = rectangles->data[id2];
-            
+
             if (CheckCollisionRecs(c1.rect, c2.rect)) {
                 if (on_collision) {
-                    on_collision(id1, id2);
+                    on_collision(game, id1, id2);
                 }
             }
         }
@@ -74,10 +76,10 @@ void check_collisions(EntityRegistry* reg, RectangleArray* rectangles, CircleArr
             int id2 = circ_ids[j];
             Circle c1 = circles->data[id1];
             Circle c2 = circles->data[id2];
-            
+
             if (CheckCollisionCircles(c1.position, c1.radius, c2.position, c2.radius)) {
                 if (on_collision) {
-                    on_collision(id1, id2);
+                    on_collision(game, id1, id2);
                 }
             }
         }
@@ -93,7 +95,7 @@ void check_collisions(EntityRegistry* reg, RectangleArray* rectangles, CircleArr
 
             if (CheckCollisionCircleRec(c1.position, c1.radius, c2.rect)) {
                 if (on_collision) {
-                    on_collision(circ_id, rect_id);
+                    on_collision(game, circ_id, rect_id);
                 }
             }
         }
