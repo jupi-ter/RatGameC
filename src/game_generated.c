@@ -1,4 +1,5 @@
-                                                                            #include "game_generated.h"
+#include "game_generated.h"
+#include <stdio.h>
 
 uint32_t player_create(GameState* game, float x, float y) {
     uint32_t entity_id = entity_create(&game->registry, &game->transforms,
@@ -75,31 +76,7 @@ void player_update(GameState* game, uint32_t entity_id) {
         entity->vsp = -2;
     }
     (&game->transforms.data[eid])->x = (&game->transforms.data[eid])->x + entity->hsp;
-    if (place_meeting(game, eid, (&game->transforms.data[eid])->x, (&game->transforms.data[eid])->y, ENTITY_TYPE_WALL)) {
-        if (entity->hsp > 0) {
-            while (place_meeting(game, eid, (&game->transforms.data[eid])->x, (&game->transforms.data[eid])->y, ENTITY_TYPE_WALL)) {
-                (&game->transforms.data[eid])->x = (&game->transforms.data[eid])->x - 1;
-            }
-        } else {
-            while (place_meeting(game, eid, (&game->transforms.data[eid])->x, (&game->transforms.data[eid])->y, ENTITY_TYPE_WALL)) {
-                (&game->transforms.data[eid])->x = (&game->transforms.data[eid])->x + 1;
-            }
-        }
-        entity->hsp = 0;
-    }
     (&game->transforms.data[eid])->y = (&game->transforms.data[eid])->y + entity->vsp;
-    if (place_meeting(game, eid, (&game->transforms.data[eid])->x, (&game->transforms.data[eid])->y, ENTITY_TYPE_WALL)) {
-        if (entity->vsp > 0) {
-            while (place_meeting(game, eid, (&game->transforms.data[eid])->x, (&game->transforms.data[eid])->y, ENTITY_TYPE_WALL)) {
-                (&game->transforms.data[eid])->y = (&game->transforms.data[eid])->y - 1;
-            }
-        } else {
-            while (place_meeting(game, eid, (&game->transforms.data[eid])->x, (&game->transforms.data[eid])->y, ENTITY_TYPE_WALL)) {
-                (&game->transforms.data[eid])->y = (&game->transforms.data[eid])->y + 1;
-            }
-        }
-        entity->vsp = 0;
-    }
 }
 
 void player_destroy(GameState* game, uint32_t entity_id) {
@@ -145,6 +122,7 @@ void player_on_collision(GameState* game, uint32_t entity_id, uint32_t other_id)
     uint32_t eid = entity_id;
     uint32_t other = other_id;
 
+    instance_destroy(game, other);
 }
 
 uint32_t wall_create(GameState* game, float x, float y) {
@@ -258,3 +236,16 @@ void dispatch_collision(GameState* game, uint32_t id1, uint32_t id2) {
     }
 }
 
+void instance_destroy(GameState* game, uint32_t entity_id) {
+    printf("instance_destroy called on entity %d\n", entity_id);
+    switch (game->entity_types[entity_id]) {
+    case ENTITY_TYPE_PLAYER:
+        player_destroy(game, entity_id);
+        break;
+    case ENTITY_TYPE_WALL:
+        wall_destroy(game, entity_id);
+        break;
+    default:
+        break;
+    }
+}
