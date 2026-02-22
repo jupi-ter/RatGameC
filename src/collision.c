@@ -150,3 +150,66 @@ void draw_collisions(RectangleArray* rectangles, CircleArray* circles) {
         DrawCircle(c1.position.x, c1.position.y ,c1.radius, fuchsia);
     }
 }
+
+bool place_meeting(GameState* game, uint32_t entity_id, float x, float y, EntityType type) {
+    // Get the collision shape of the checking entity
+    CollisionShape shape = game->registry.collision_types[entity_id];
+
+    if (shape == COLLISION_RECT) {
+        RectWrapper temp_rect = game->rectangles.data[entity_id];
+        temp_rect.rect.x = x;
+        temp_rect.rect.y = y;
+
+        // Check against all entities of the specified type
+        for (uint32_t i = 0; i < game->registry.count; i++) {
+            if (i == entity_id) continue;  // Don't collide with self
+            if (game->entity_types[i] != type) continue;  // Wrong type
+
+            CollisionShape other_shape = game->registry.collision_types[i];
+
+            if (other_shape == COLLISION_RECT) {
+                // Rect vs Rect
+                if (CheckCollisionRecs(temp_rect.rect, game->rectangles.data[i].rect)) {
+                    return true;
+                }
+            } else if (other_shape == COLLISION_CIRC) {
+                // Rect vs Circle
+                if (CheckCollisionCircleRec(game->circles.data[i].position,
+                                           game->circles.data[i].radius,
+                                           temp_rect.rect)) {
+                    return true;
+                }
+            }
+        }
+    } else if (shape == COLLISION_CIRC) {
+        Circle temp_circ = game->circles.data[entity_id];
+        temp_circ.position.x = x;
+        temp_circ.position.y = y;
+
+        // Check against all entities of the specified type
+        for (uint32_t i = 0; i < game->registry.count; i++) {
+            if (i == entity_id) continue;  // Don't collide with self
+            if (game->entity_types[i] != type) continue;  // Wrong type
+
+            CollisionShape other_shape = game->registry.collision_types[i];
+
+            if (other_shape == COLLISION_CIRC) {
+                // Circle vs Circle
+                if (CheckCollisionCircles(temp_circ.position, temp_circ.radius,
+                                         game->circles.data[i].position,
+                                         game->circles.data[i].radius)) {
+                    return true;
+                }
+            } else if (other_shape == COLLISION_RECT) {
+                // Circle vs Rect
+                if (CheckCollisionCircleRec(temp_circ.position,
+                                           temp_circ.radius,
+                                           game->rectangles.data[i].rect)) {
+                    return true;
+                }
+            }
+        }
+    }
+
+    return false;
+}

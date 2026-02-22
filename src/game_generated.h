@@ -64,5 +64,9 @@ void player_destroy(GameState* game, uint32_t entity_id);
 uint32_t wall_create(GameState* game, float x, float y);
 void wall_update(GameState* game, uint32_t entity_id);
 void wall_destroy(GameState* game, uint32_t entity_id);
+
+// Collision helper
+bool place_meeting(GameState* game, uint32_t entity_id, float x, float y, EntityType type);
+
 void game_init(GameState* game);void game_update(GameState* game);void game_cleanup(GameState* game);void dispatch_collision(GameState* game, uint32_t id1, uint32_t id2);
 #endif // GAME_GENERATED_H
