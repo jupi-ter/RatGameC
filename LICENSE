@@ -1,0 +1,226 @@
+RAT ENGINE LICENSE
+Version 1.0
+
+Copyright (c) 2026, jules
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. DEFINITIONS
+
+   "License" means this document.
+
+   "Licensor" means the copyright holder(s) named above.
+
+   "You" (or "Your") means an individual or legal entity exercising permissions
+   granted by this License.
+
+   "Engine" means the source code, object code, compiled binaries, associated
+   documentation, editor tools, and all other files of the game engine
+   distributed under this License, including but not limited to the runtime,
+   renderer, asset pipeline, editor (RatEditor), scripting layer, and standard
+   libraries that form part of the engine itself.
+
+   "Engine Derivative Work" means any work based on or derived from the Engine,
+   including modifications, forks, ports, adaptations, and works that
+   substantially incorporate the Engine's source code.
+
+   "Game" means an interactive software application, software project, or other
+   creative work that You build using the Engine, where the Engine is used as
+   an underlying platform or runtime but is not itself the primary deliverable.
+   A Game does not include a fork or modification of the Engine sold or
+   distributed as a game engine or development tool.
+
+   "Commercial Purpose" means any activity intended for or resulting in
+   commercial advantage or monetary compensation. As it applies to the Engine
+   and Engine Derivative Works specifically, Commercial Purpose includes but is
+   not limited to: selling or licensing the Engine or an Engine Derivative Work;
+   offering the Engine or an Engine Derivative Work as a paid service or
+   subscription; bundling the Engine or an Engine Derivative Work as a component
+   of a paid product; charging for access to a hosted instance of the Engine
+   or Engine Derivative Work.
+
+   "AI Training Purpose" means using the Engine, its source code, its
+   documentation, or any Engine Derivative Work as training data, fine-tuning
+   data, evaluation data, reinforcement learning data, or any other input to
+   a machine learning or artificial intelligence system, model, or pipeline.
+
+   "Distribute" means to make available to any third party by any means.
+
+
+2. GRANT OF LICENSE
+
+   Subject to the terms and conditions of this License, the Licensor hereby
+   grants You a worldwide, royalty-free, non-exclusive license to:
+
+   a) Use the Engine to create Games, including Games intended for and
+      distributed for Commercial Purposes. Your Games are yours. This License
+      places no restrictions on how you license, sell, or distribute Games
+      you create with the Engine.
+
+   b) Copy and Distribute the Engine in source or compiled form, provided
+      that You comply with Section 3 (Conditions of Distribution).
+
+   c) Modify the Engine and create Engine Derivative Works for non-commercial
+      purposes, provided that You comply with Section 3 and Section 4.
+
+   d) Use the Engine internally within your organization for game development
+      without distribution, including for the development of commercial Games.
+
+
+3. CONDITIONS OF DISTRIBUTION
+
+   You may Distribute the Engine or any Engine Derivative Work only if ALL
+   of the following conditions are met:
+
+   a) ATTRIBUTION: You must retain the original copyright notice and this
+      License in its entirety in all copies and substantial portions of the
+      Engine. You must include a prominent notice that You have modified the
+      Engine and the date of such modifications, if distributing an Engine
+      Derivative Work.
+
+   b) SAME LICENSE: Any Engine Derivative Work you Distribute must be
+      licensed under this License, verbatim. You may not impose additional
+      restrictions beyond those in this License, and you may not grant
+      additional permissions not present in this License.
+
+   c) SOURCE AVAILABILITY: If you Distribute a compiled or binary form of
+      the Engine or an Engine Derivative Work, you must make the complete
+      corresponding source code available under this License, either bundled
+      with the distribution or via a publicly accessible URL that remains
+      accessible for no less than three (3) years from the date of
+      distribution.
+
+   d) NON-COMMERCIAL ONLY: The Engine and any Engine Derivative Work may only
+      be Distributed at no cost and for no monetary compensation. You may not
+      sell, charge for, or monetize the Engine or any Engine Derivative Work
+      in any form. Distribution must be free of charge.
+
+
+4. COPYLEFT REQUIREMENT
+
+   Any Engine Derivative Work must be licensed under this License in its
+   entirety. You may not relicense an Engine Derivative Work under any other
+   license, including the MIT License, Apache License, GPL, or any
+   proprietary license. The copyleft obligation applies to the Engine and
+   Engine Derivative Works only; it does not propagate to Games built using
+   the Engine.
+
+
+5. RESTRICTIONS
+
+   The following are expressly prohibited:
+
+   a) COMMERCIAL USE OF THE ENGINE PROHIBITED: You may not use, Distribute,
+      sell, license, or offer the Engine or any Engine Derivative Work for
+      any Commercial Purpose. This prohibition covers the Engine itself and
+      any fork, port, adaptation, or modification of the Engine.
+
+      For clarity: this restriction applies to the Engine as a software
+      product or tool. It does not restrict You from commercially releasing,
+      selling, or distributing Games that you build using the Engine.
+
+   b) AI TRAINING PROHIBITED: You may not use the Engine, its source code,
+      its documentation, or any Engine Derivative Work for any AI Training
+      Purpose, whether commercial or non-commercial.
+
+   c) MONETIZED HOSTING: You may not offer the Engine or any Engine Derivative
+      Work as a paid hosted service, software-as-a-service, or cloud platform.
+
+   d) SUBLICENSING UNDER DIFFERENT TERMS: You may not sublicense the Engine
+      or any Engine Derivative Work under any license other than this License.
+
+
+6. GAMES BUILT WITH THE ENGINE
+
+   Games that You build using the Engine are Your own creative works. This
+   License does not restrict how You own, license, sell, or distribute Your
+   Games. You may release Games under any license you choose, including
+   proprietary and commercial licenses. You do not owe royalties or fees to
+   the Licensor for Games you release using the Engine.
+
+   The Engine runtime or libraries that are linked into or distributed with
+   Your Game remain subject to this License. You must include a copy of this
+   License and an attribution notice with any Game you distribute that bundles
+   Engine binaries or source code. A brief notice in your credits, readme, or
+   About screen is sufficient for attribution.
+
+
+7. CONTRIBUTIONS
+
+   If You submit contributions to the Licensor for inclusion in the Engine,
+   You grant the Licensor a perpetual, irrevocable, worldwide, royalty-free
+   license to use, reproduce, modify, and distribute your contribution under
+   this License or any future version of this License chosen by the Licensor.
+
+
+8. TERMINATION
+
+   Your rights under this License terminate automatically and immediately if
+   You breach any of its terms. Upon termination, You must cease all use,
+   distribution, and modification of the Engine and destroy all copies in
+   Your possession. Termination of your rights does not affect the rights of
+   others who have received copies under this License and remain in compliance.
+
+   The Licensor may reinstate Your rights upon written notice if the breach
+   is cured within thirty (30) days of the Licensor notifying You of the
+   breach, at the Licensor's sole discretion.
+
+
+9. DISCLAIMER OF WARRANTIES
+
+   THE ENGINE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+   FITNESS FOR A PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT. THE
+   LICENSOR DOES NOT WARRANT THAT THE ENGINE WILL MEET YOUR REQUIREMENTS,
+   OPERATE WITHOUT INTERRUPTION, OR BE FREE OF ERRORS OR DEFECTS, AND DOES
+   NOT WARRANT THE SUITABILITY OF THE ENGINE FOR ANY PARTICULAR GAME OR
+   APPLICATION.
+
+   YOU ASSUME ALL RISK ASSOCIATED WITH THE USE OF THE ENGINE. THIS DISCLAIMER
+   OF WARRANTIES IS AN ESSENTIAL PART OF THIS LICENSE. NO USE OF THE ENGINE
+   IS AUTHORIZED EXCEPT UNDER THIS DISCLAIMER.
+
+
+10. LIMITATION OF LIABILITY
+
+    TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, IN NO EVENT SHALL THE
+    LICENSOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+    EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING BUT NOT LIMITED TO
+    PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+    PROFITS; LOSS OF REVENUE FROM GAMES; OR BUSINESS INTERRUPTION) HOWEVER
+    CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+    LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+    OUT OF THE USE OF THE ENGINE OR GAMES BUILT WITH THE ENGINE, EVEN IF
+    ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
+11. MISCELLANEOUS
+
+    a) This License constitutes the entire agreement between You and the
+       Licensor with respect to the Engine.
+
+    b) If any provision of this License is found to be unenforceable, such
+       provision shall be modified to the minimum extent necessary to make it
+       enforceable, and the remaining provisions shall continue in full force.
+
+    c) The failure of the Licensor to enforce any provision of this License
+       shall not be construed as a waiver of the right to enforce such
+       provision in the future.
+
+    d) This License shall be governed by and construed in accordance with the
+       laws of the jurisdiction in which the Licensor is domiciled, without
+       regard to conflict of law principles.
+
+    e) For commercial licensing inquiries (e.g., if you wish to sell a fork of
+       the Engine or use the Engine in a commercial context not covered by this
+       License), contact the Licensor directly.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+END OF LICENSE
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
