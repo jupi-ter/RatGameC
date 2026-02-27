@@ -288,10 +288,9 @@ Designed for lightweight games targeting older hardware:
 
 There's currently no debugging baked in.
 
+## Attribution
+Raylib is used under the MIT License.
+
 ## Contributing
 
 This is a personal learning project. Issues and pull requests are welcome but may not be immediately addressed.
-
-## License
-
-Custom license, see LICENSE file for details
