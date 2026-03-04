@@ -1,4 +1,4 @@
-#ifndef TILE_H
+/*#ifndef TILE_H
 #define TILE_H
 
 #include <stdbool.h>
@@ -42,3 +42,4 @@ LevelData tile_grid_load_level(LevelID level_id);
 extern const char* TILE_METADATA_NAME[];
 
 #endif
+*/

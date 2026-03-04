@@ -1,4 +1,4 @@
-#include "tile.h"
+/*#include "tile.h"
 #include "raylib.h"
 #include "sprite.h"
 #include "utils.h"
@@ -60,13 +60,16 @@ bool tile_grid_check_collision(TileGrid *grid, Rectangle bbox) {
 }
 
 void tile_grid_draw(TileGrid *grid) {
+    Texture2D atlas = sprite_manager_get_atlas();
     for (int y = 0; y < grid->height; y++) {
         for (int x = 0; x < grid->width; x++) {
             SpriteID type = grid->data[y * grid->width + x];
             if (type == SPRITE_NONE) continue;
-            
-            Sprite sprite = sprite_manager_get_sprite(type);
-            DrawTexture(sprite.frames[0], x * TILE_SIZE, y * TILE_SIZE, WHITE);
+
+            const Sprite* sprite = sprite_manager_get_sprite(type);
+            Rectangle src = sprite->frames[0];
+            Rectangle dest = { (float)(x * TILE_SIZE), (float)(y * TILE_SIZE), src.width, src.height };
+            DrawTexturePro(atlas, src, dest, (Vector2){0, 0}, 0, WHITE);
         }
     }
 }
@@ -170,3 +173,4 @@ LevelData tile_grid_load_level(LevelID level_id) {
     printf("Loaded level from: %s\n", filename);
     return level_data;
 }
+*/

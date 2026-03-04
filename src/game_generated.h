@@ -18,7 +18,6 @@
 
 typedef enum {
     ENTITY_TYPE_PLAYER,
-    ENTITY_TYPE_WALL,
     ENTITY_TYPE_COUNT
 } EntityType;
 
@@ -34,16 +33,6 @@ int count;
 int capacity;
 } PlayerArray;
 
-typedef struct Wall {
-uint32_t entity_id;
-} Wall;
-
-typedef struct WallArray {
-Wall* data;
-int count;
-int capacity;
-} WallArray;
-
 typedef struct GameState {
 // Engine components
 EntityRegistry registry;
@@ -55,15 +44,11 @@ TimerArray timers;
 EntityType* entity_types;
 
     PlayerArray players;
-    WallArray walls;
 } GameState;
 
 uint32_t player_create(GameState* game, float x, float y);
 void player_update(GameState* game, uint32_t entity_id);
 void player_destroy(GameState* game, uint32_t entity_id);
-uint32_t wall_create(GameState* game, float x, float y);
-void wall_update(GameState* game, uint32_t entity_id);
-void wall_destroy(GameState* game, uint32_t entity_id);
 
 // Collision helper
 bool place_meeting(GameState* game, uint32_t entity_id, float x, float y, EntityType type);
