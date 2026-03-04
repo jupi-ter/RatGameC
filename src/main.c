@@ -37,6 +37,7 @@ int main(void)
     game.circles = circ_array_create(16);
     game.rectangles = rect_array_create(16);
     game.timers = timer_manager_create(16);
+    sprite_manager_load_atlas("assets/atlas.png");
     game_init(&game);
 
     // Example: Create a test entity (this would be done by codegen in real usage)

@@ -31,8 +31,8 @@ void renderable_manager_update(RenderableArray* renderables, EntityRegistry* reg
         if (renderable->frame_counter >= 1.0f) {
             renderable->frame_counter -= 1.0f;
             renderable->image_index++;
-            Sprite currentSprite = sprite_manager_get_sprite(renderable->current_sprite_id);
-            if (renderable->image_index >= currentSprite.total_frames) {
+            const Sprite* currentSprite = sprite_manager_get_sprite(renderable->current_sprite_id);
+            if (renderable->image_index >= currentSprite->total_frames) {
                 renderable->image_index = 0;
             }
         }
@@ -40,33 +40,31 @@ void renderable_manager_update(RenderableArray* renderables, EntityRegistry* reg
 }
 
 void renderable_manager_draw(RenderableArray* renderables, TransformArray* transforms, EntityRegistry* reg) {
+    Texture2D atlas = sprite_manager_get_atlas();
     // Only draw active entities
     for (int i = 0; i < (int)reg->count; i++) {
         Renderable renderable = renderables->data[i];
         transform_t transform = transforms->data[i];
-        Sprite sprite_array = sprite_manager_get_sprite(renderable.current_sprite_id);
-        Texture2D current_texture = sprite_array.frames[renderable.image_index];
-        
-        Vector2 origin = {
-            .x = 0.0f,
-            .y = 0.0f
-        };
+        const Sprite* sprite_data = sprite_manager_get_sprite(renderable.current_sprite_id);
+        Rectangle frame = sprite_data->frames[renderable.image_index];
+
+        Vector2 origin = { 0.0f, 0.0f };
 
         Rectangle source = {
-            .x = 0,
-            .y = 0,
-            .width = current_texture.width * transform.right,
-            .height = current_texture.height * transform.up,
+            .x = frame.x,
+            .y = frame.y,
+            .width = frame.width * transform.right,
+            .height = frame.height * transform.up,
         };
 
         Rectangle dest = {
             .x = (int)transform.x,
             .y = (int)transform.y,
-            .width = current_texture.width * transform.image_xscale,
-            .height = current_texture.height * transform.image_yscale,
+            .width = frame.width * transform.image_xscale,
+            .height = frame.height * transform.image_yscale,
         };
 
-        DrawTexturePro(current_texture, source, dest, origin, 0, WHITE);
+        DrawTexturePro(atlas, source, dest, origin, 0, WHITE);
     }
 }
 

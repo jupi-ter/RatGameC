@@ -2,25 +2,14 @@
 #define SPRITE_H
 
 #include <raylib.h>
+#include "sprite_ids.h"
 
-#define BASE_SPRITE_PATH "assets/sprites/"
-#define SPRITE_PATH_MAX_LENGTH 64
-#define MAX_FRAMES 16
+typedef SpriteAtlasEntry Sprite;
 
-typedef enum SpriteID {
-    SPRITE_NONE,
-    SPRITE_WALL,
-    SPRITE_PLAYER,
-    SPRITE_COUNT
-} SpriteID;
-
-typedef struct Sprite {
-    Texture2D frames[MAX_FRAMES];
-    int total_frames;
-} Sprite;
-
-Sprite sprite_manager_get_sprite(SpriteID id);
+void sprite_manager_load_atlas(const char* atlas_path);
+const Sprite* sprite_manager_get_sprite(SpriteID id);
+Texture2D sprite_manager_get_atlas(void);
 void sprite_manager_unload_all(void);
-SpriteID sprite_get_id_from_name(char* sprite_name);
+SpriteID sprite_get_id_from_name(const char* name);
 
 #endif
