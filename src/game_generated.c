@@ -36,7 +36,7 @@ uint32_t player_create(GameState* game, float x, float y) {
     uint32_t eid = entity->entity_id;  // For component access
     entity->hsp = 0;
     entity->vsp = 0;
-    (&game->renderables.data[eid])->current_sprite_id = SPRITE_RED;
+    (&game->renderables.data[eid])->current_sprite_id = SPRITE_YELLOW;
     (&game->renderables.data[eid])->image_speed = 0.1;
     return entity_id;
 }
